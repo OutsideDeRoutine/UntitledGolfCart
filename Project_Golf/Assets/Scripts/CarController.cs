@@ -18,6 +18,7 @@ public class CarController : MonoBehaviour {
     public Transform steeringWheel;
     public float maxMotorTorque;
     public float maxSteeringAngle;
+    public float aceleration;
 
 
     // finds the corresponding visual wheel
@@ -52,15 +53,15 @@ public class CarController : MonoBehaviour {
     private float steering;
     public void FixedUpdate()
     {
-        float motor = maxMotorTorque * Input.GetAxis("Vertical");
+        float motor = maxMotorTorque * Input.GetAxis("Vertical") * aceleration;
 
         float vel = GetComponent<Rigidbody>().velocity.magnitude;
 
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel),10, maxSteeringAngle);
 
-        float h = Input.GetAxis("Horizontal")/2;
+        float h = Input.GetAxis("Horizontal")/4;
 
-        float fit = h ==0? (steering==0? 0:(steering>0? -vel : vel) / 20) : h * 4;
+        float fit = h ==0? (steering==0? 0:(steering>0? -vel : vel) / 5) : h * 4;
         if (fit != h * 4)
             steering += steering > 0 ? (steering + fit < 0 ? 0 : fit) : (steering + fit > 0 ? 0 : fit);
         else steering += h * 4;
