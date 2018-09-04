@@ -75,12 +75,13 @@ public class CarController : MonoBehaviour {
         float vel = velocity.magnitude;
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
-        float h = Input.GetAxis("Horizontal") / 6;      
+        float h = Input.GetAxis("Horizontal") / 6;
+        steering = h* maxSteeringAngle; // <----ARREGLAR EL SISTEMA DE GIRO ( TO DO (?) )
 
-        float fit = h == 0 ? (steering == 0 ? 0 : (steering > 0 ? -vel : vel) / 2) : h * 4; // <----ARREGLAR EL SISTEMA DE GIRO (TO DO)
+        /*float fit = h == 0 ? (steering == 0 ? 0 : (steering > 0 ? -vel : vel) / 2) : h * 4; 
         if (fit != h * 4)
             steering += steering > 0 ? (steering + fit < 0 ? -steering : fit) : (steering + fit > 0 ? -steering : fit);
-        else steering += h * 4;
+        else steering += h * 4;*/
 
         steering = Mathf.Clamp(steering, -maxSteeringAtVel, maxSteeringAtVel);
 
@@ -95,7 +96,9 @@ public class CarController : MonoBehaviour {
             }
 
              if (axleInfo.motor)
-            {  
+            {
+                axleInfo.leftWheel.brakeTorque = 0;
+                axleInfo.rightWheel.brakeTorque = 0;
                 switch (state)
                 {
                     case (CarState.Stopped):
@@ -109,6 +112,11 @@ public class CarController : MonoBehaviour {
                             axleInfo.leftWheel.motorTorque = motoraceleration;
                             axleInfo.rightWheel.motorTorque = motoraceleration;
                         }
+                        else
+                        {
+                            axleInfo.leftWheel.brakeTorque = motorbreak;
+                            axleInfo.rightWheel.brakeTorque = motorbreak;
+                        }
                         break;
 
                     case (CarState.Backwards):
@@ -116,6 +124,11 @@ public class CarController : MonoBehaviour {
                         {
                             axleInfo.leftWheel.motorTorque = motoraceleration;
                             axleInfo.rightWheel.motorTorque = motoraceleration;
+                        }
+                        else
+                        {
+                            axleInfo.leftWheel.brakeTorque = motorbreak;
+                            axleInfo.rightWheel.brakeTorque = motorbreak;
                         }
                         break;
                 }
@@ -131,8 +144,8 @@ public class CarController : MonoBehaviour {
                             break;
 
                         case (CarState.Forwards):
-                            axleInfo.leftWheel.motorTorque = -100;
-                            axleInfo.rightWheel.motorTorque = -100;
+                                axleInfo.leftWheel.motorTorque = -100;
+                                axleInfo.rightWheel.motorTorque = -100;       
                             if (v < 0)
                             {
                                 axleInfo.leftWheel.motorTorque = -motorbreak;
@@ -141,6 +154,7 @@ public class CarController : MonoBehaviour {
                             break;
 
                         case (CarState.Backwards):
+
                             axleInfo.leftWheel.motorTorque = 150;
                             axleInfo.rightWheel.motorTorque = 150;
                             if (v > 0)
@@ -168,13 +182,14 @@ public class CarController : MonoBehaviour {
     private void UpdateCarState(Vector3 position,Vector3 direction, Vector3 velocity)
     {
         
-        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.01f)
+        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.15f)
             state = CarState.Stopped;
         else
         {
-            float velAngle = Vector3.Angle(position, velocity);
-            float dirAngle = Vector3.Angle(position, direction);
-            if (Mathf.Abs(velAngle- dirAngle)> 45) // <---- PROBLEMAS (?)
+            float velAngle = Vector3.Angle(position, velocity.normalized);
+            float dirAngle = Vector3.Angle(position, direction.normalized);
+            //Debug.Log(Mathf.Abs(velAngle - dirAngle));
+            if (Mathf.Abs(velAngle- dirAngle)> 45) // <---- PROBLEMAS (!!!!!!!!!!!)
             {
                 state = CarState.Backwards;
             }
