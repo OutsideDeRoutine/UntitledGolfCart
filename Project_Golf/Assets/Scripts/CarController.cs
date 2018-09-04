@@ -85,7 +85,7 @@ public class CarController : MonoBehaviour {
 
         steering = Mathf.Clamp(steering, -maxSteeringAtVel, maxSteeringAtVel);
 
-        UpdateCarState(CoM.position, CoM.forward , velocity);
+        UpdateCarState(CoM.localPosition, CoM.forward , velocity);
 
         foreach (AxleInfo axleInfo in axleInfos)
         {
@@ -182,14 +182,13 @@ public class CarController : MonoBehaviour {
     private void UpdateCarState(Vector3 position,Vector3 direction, Vector3 velocity)
     {
         
-        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.15f)
+        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.1f)
             state = CarState.Stopped;
         else
         {
-            float velAngle = Vector3.Angle(position, velocity.normalized);
-            float dirAngle = Vector3.Angle(position, direction.normalized);
-            //Debug.Log(Mathf.Abs(velAngle - dirAngle));
-            if (Mathf.Abs(velAngle- dirAngle)> 45) // <---- PROBLEMAS (!!!!!!!!!!!)
+            float a = angle(position, direction, velocity);
+            Debug.Log((a));
+            if (Mathf.Abs(a)> 90)
             {
                 state = CarState.Backwards;
             }
@@ -198,5 +197,13 @@ public class CarController : MonoBehaviour {
                 state = CarState.Forwards;
             }
         }
+    }
+
+    private float angle(Vector3 a, Vector3 b, Vector3 c)
+    {
+        float C = Vector3.Distance(a, b);
+        float B = Vector3.Distance(a, c);
+        float A = Vector3.Distance(b, c);
+        return Mathf.Acos(  (Mathf.Pow(B, 2)    + Mathf.Pow(C, 2)   - Mathf.Pow(A, 2))   /   (2* B * C))*100;
     }
 }
