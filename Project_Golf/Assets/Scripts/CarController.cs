@@ -75,9 +75,9 @@ public class CarController : MonoBehaviour {
         float vel = velocity.magnitude;
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
-        float h = Input.GetAxis("Horizontal") / 4;
+        float h = Input.GetAxis("Horizontal") / 6;      
 
-        float fit = h == 0 ? (steering == 0 ? 0 : (steering > 0 ? -vel : vel) / 2) : h * 4;
+        float fit = h == 0 ? (steering == 0 ? 0 : (steering > 0 ? -vel : vel) / 2) : h * 4; // <----ARREGLAR EL SISTEMA DE GIRO (TO DO)
         if (fit != h * 4)
             steering += steering > 0 ? (steering + fit < 0 ? -steering : fit) : (steering + fit > 0 ? -steering : fit);
         else steering += h * 4;
@@ -94,55 +94,66 @@ public class CarController : MonoBehaviour {
                 axleInfo.rightWheel.steerAngle = steering;
             }
 
-
-            if (axleInfo.motor)
-            {
-                axleInfo.leftWheel.motorTorque = motoraceleration;
-                axleInfo.rightWheel.motorTorque = motoraceleration;
-                if (axleInfo.rightWheel.motorTorque>0)
+             if (axleInfo.motor)
+            {  
                 switch (state)
                 {
                     case (CarState.Stopped):
-
+                        axleInfo.leftWheel.motorTorque = motoraceleration;
+                        axleInfo.rightWheel.motorTorque = motoraceleration;
                         break;
 
                     case (CarState.Forwards):
-                            axleInfo.leftWheel.motorTorque -= 100;
-                            axleInfo.rightWheel.motorTorque -= 100;
+                        if (v >= 0)
+                        {
+                            axleInfo.leftWheel.motorTorque = motoraceleration;
+                            axleInfo.rightWheel.motorTorque = motoraceleration;
+                        }
                         break;
 
                     case (CarState.Backwards):
-                            axleInfo.leftWheel.motorTorque += 150;
-                            axleInfo.rightWheel.motorTorque += 150;
+                        if (v <= 0)
+                        {
+                            axleInfo.leftWheel.motorTorque = motoraceleration;
+                            axleInfo.rightWheel.motorTorque = motoraceleration;
+                        }
                         break;
                 }
-                
             }
             else
             {
-                axleInfo.leftWheel.brakeTorque = 0;
-                axleInfo.rightWheel.brakeTorque = 0;
-                switch (state)
+                if (Mathf.Abs(vel) > 0)
+                    switch (state)
+                    {
+                        case (CarState.Stopped):
+                            axleInfo.leftWheel.motorTorque = 0;
+                            axleInfo.rightWheel.motorTorque = 0;
+                            break;
+
+                        case (CarState.Forwards):
+                            axleInfo.leftWheel.motorTorque = -100;
+                            axleInfo.rightWheel.motorTorque = -100;
+                            if (v < 0)
+                            {
+                                axleInfo.leftWheel.motorTorque = -motorbreak;
+                                axleInfo.rightWheel.motorTorque = -motorbreak;
+                            }
+                            break;
+
+                        case (CarState.Backwards):
+                            axleInfo.leftWheel.motorTorque = 150;
+                            axleInfo.rightWheel.motorTorque = 150;
+                            if (v > 0)
+                            {
+                                axleInfo.leftWheel.motorTorque = motorbreak;
+                                axleInfo.rightWheel.motorTorque = motorbreak;
+                            }
+                            break;
+                    }
+                else
                 {
-                    case (CarState.Stopped):
-
-                        break;
-
-                    case (CarState.Forwards):
-                        if (v < 0)
-                        {
-                            axleInfo.leftWheel.brakeTorque = motorbreak;
-                            axleInfo.rightWheel.brakeTorque = motorbreak;
-                        }
-                        break;
-
-                    case (CarState.Backwards):
-                        if (v > 0)
-                        {
-                            axleInfo.leftWheel.brakeTorque = motorbreak;
-                            axleInfo.rightWheel.brakeTorque = motorbreak;
-                        }
-                        break;
+                    axleInfo.leftWheel.motorTorque = 0;
+                    axleInfo.rightWheel.motorTorque = 0;
                 }
             }
 
@@ -163,8 +174,7 @@ public class CarController : MonoBehaviour {
         {
             float velAngle = Vector3.Angle(position, velocity);
             float dirAngle = Vector3.Angle(position, direction);
-            Debug.Log(velAngle - dirAngle);
-            if (Mathf.Abs(velAngle- dirAngle)> maxSteeringAngle) // <---- PROBLEMAS
+            if (Mathf.Abs(velAngle- dirAngle)> 45) // <---- PROBLEMAS (?)
             {
                 state = CarState.Backwards;
             }
