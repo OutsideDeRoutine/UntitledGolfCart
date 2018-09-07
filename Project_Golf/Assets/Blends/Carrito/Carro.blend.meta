@@ -147,6 +147,26 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Rueda_001
+    second: {fileID: 2100000, guid: cb69ecd8ef463ed4897191b49585e96d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rueda_002
+    second: {fileID: 2100000, guid: cb69ecd8ef463ed4897191b49585e96d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rueda_003
+    second: {fileID: 2100000, guid: cb69ecd8ef463ed4897191b49585e96d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rueda_004
+    second: {fileID: 2100000, guid: cb69ecd8ef463ed4897191b49585e96d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Tela
     second: {fileID: 2100000, guid: 2657fdb14b106f24ab4f4e6b43c04d31, type: 2}
   materials:

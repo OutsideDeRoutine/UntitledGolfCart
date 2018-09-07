@@ -4,7 +4,53 @@ ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: //RootNode
+    100002: All
+    100004: Arm_L
+    100006: Arm_Lower_L
+    100008: Arm_Lower_R
+    100010: Arm_R
+    100012: Arm_Upper_L
+    100014: Arm_Upper_R
+    100016: Armature
+    100018: Body_Lower
+    100020: Body_Upper
+    100022: Cube
+    100024: Feet_L
+    100026: Feet_R
+    100028: Hand_L
+    100030: Hand_R
+    100032: Head
+    100034: Leg_Lower_L
+    100036: Leg_Lower_R
+    100038: Leg_Upper_L
+    100040: Leg_Upper_L_001
+    100042: Leg_Upper_R
+    100044: Leg_Upper_R_001
+    100046: Neck
     400000: //RootNode
+    400002: All
+    400004: Arm_L
+    400006: Arm_Lower_L
+    400008: Arm_Lower_R
+    400010: Arm_R
+    400012: Arm_Upper_L
+    400014: Arm_Upper_R
+    400016: Armature
+    400018: Body_Lower
+    400020: Body_Upper
+    400022: Cube
+    400024: Feet_L
+    400026: Feet_R
+    400028: Hand_L
+    400030: Hand_R
+    400032: Head
+    400034: Leg_Lower_L
+    400036: Leg_Lower_R
+    400038: Leg_Upper_L
+    400040: Leg_Upper_L_001
+    400042: Leg_Upper_R
+    400044: Leg_Upper_R_001
+    400046: Neck
     2100000: Material_004
     2100002: Material_002
     2100004: Material_003
@@ -16,6 +62,7 @@ ModelImporter:
     4300000: Cube
     7400000: Default Take
     9500000: //RootNode
+    13700000: Cube
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -41,12 +88,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material_007
-    second: {fileID: 2100000, guid: 387edcfd7025a074caa83107131612fd, type: 2}
+    second: {fileID: 2100000, guid: 9d078a36cfc532843b3b8af9a15cfbc9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Material_008
-    second: {fileID: 2100000, guid: e437cf07c3fa13248b22edd29ac3ea33, type: 2}
+    second: {fileID: 2100000, guid: 9d078a36cfc532843b3b8af9a15cfbc9, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

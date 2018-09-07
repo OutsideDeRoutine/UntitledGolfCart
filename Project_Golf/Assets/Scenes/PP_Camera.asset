@@ -33,12 +33,12 @@ MonoBehaviour:
     m_Settings:
       method: 0
       fxaaSettings:
-        preset: 1
+        preset: 4
       taaSettings:
-        jitterSpread: 0.75
-        sharpen: 0.3
-        stationaryBlending: 0.95
-        motionBlending: 0.85
+        jitterSpread: 1
+        sharpen: 3
+        stationaryBlending: 0.99
+        motionBlending: 0.99
   ambientOcclusion:
     m_Enabled: 1
     m_Settings:
@@ -308,7 +308,7 @@ MonoBehaviour:
     m_Enabled: 1
     m_Settings:
       spectralTexture: {fileID: 0}
-      intensity: 0.15
+      intensity: 0.05
   grain:
     m_Enabled: 0
     m_Settings:
@@ -319,17 +319,17 @@ MonoBehaviour:
   vignette:
     m_Enabled: 0
     m_Settings:
-      mode: 0
+      mode: 1
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
       intensity: 0.45
       smoothness: 0.2
       roundness: 1
-      mask: {fileID: 0}
-      opacity: 1
+      mask: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+      opacity: 0.719
       rounded: 0
   dithering:
-    m_Enabled: 0
+    m_Enabled: 1
   monitors:
     currentMonitorID: 0
     refreshOnPlay: 0
