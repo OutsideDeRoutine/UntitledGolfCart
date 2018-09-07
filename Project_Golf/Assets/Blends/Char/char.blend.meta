@@ -27,6 +27,7 @@ ModelImporter:
     100042: Leg_Upper_R
     100044: Leg_Upper_R_001
     100046: Neck
+    100048: Body_Lower_001
     400000: //RootNode
     400002: All
     400004: Arm_L
@@ -51,6 +52,7 @@ ModelImporter:
     400042: Leg_Upper_R
     400044: Leg_Upper_R_001
     400046: Neck
+    400048: Body_Lower_001
     2100000: Material_004
     2100002: Material_002
     2100004: Material_003
