@@ -65,6 +65,7 @@ ModelImporter:
     7400000: Default Take
     7400002: Iddle
     7400004: Walk
+    7400006: Walk
     9500000: //RootNode
     13700000: Cube
   externalObjects:
@@ -126,10 +127,10 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Iddle
-      takeName: Iddle
-      firstFrame: -1
-      lastFrame: 0
+      name: Walk
+      takeName: Walk
+      firstFrame: 0
+      lastFrame: 39
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -152,12 +153,12 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 5
     - serializedVersion: 16
-      name: Walk
-      takeName: Walk
-      firstFrame: 0
-      lastFrame: 38
+      name: Iddle
+      takeName: Iddle
+      firstFrame: -1
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
