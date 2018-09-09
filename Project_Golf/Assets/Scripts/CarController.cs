@@ -75,7 +75,6 @@ public class CarController : MonoBehaviour {
         float vel = velocity.magnitude;
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
-        //PRUEBA
         Camera.main.fieldOfView = 90 + vel;
 
         float h = Input.GetAxis("Horizontal") / 6;

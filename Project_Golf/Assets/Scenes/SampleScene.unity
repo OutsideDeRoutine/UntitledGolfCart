@@ -773,6 +773,34 @@ Transform:
   m_Father: {fileID: 111840770}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
+--- !u!1 &886735680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 886735681}
+  m_Layer: 0
+  m_Name: CharPosOutL
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &886735681
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 886735680}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -5.32, y: -0.23999996, z: -1.12}
+  m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 0.9999998}
+  m_Children: []
+  m_Father: {fileID: 1555255624}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &940499776
 Prefab:
   m_ObjectHideFlags: 0
@@ -817,6 +845,10 @@ Prefab:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1737455844555194, guid: 06bd324acd03ceb4f85f7221d1ea752e, type: 2}
+      propertyPath: m_TagString
+      value: carro
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06bd324acd03ceb4f85f7221d1ea752e, type: 2}
   m_IsPrefabAsset: 0
@@ -829,7 +861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 955677296}
   m_Layer: 0
-  m_Name: CharPos
+  m_Name: CharPosIn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1220,7 +1252,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 839a4419ae6d0ea49983411843a2f0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CharPos: {fileID: 955677296}
+  CharPosIn: {fileID: 955677296}
+  CharPosOutR: {fileID: 1756095635}
+  CharPosOutL: {fileID: 886735681}
 --- !u!4 &1555255624 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4434011754939266, guid: 06bd324acd03ceb4f85f7221d1ea752e,
@@ -1238,6 +1272,34 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.6797843, y: 7.858459, z: 8.882604}
   m_Center: {x: -0.0000007947286, y: 2.8832664, z: -1.7944176}
+--- !u!1 &1756095634
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1756095635}
+  m_Layer: 0
+  m_Name: CharPosOutR
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1756095635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1756095634}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.08, y: -0.23999996, z: -1.12}
+  m_LocalScale: {x: 0.9999998, y: 0.9999998, z: 0.9999998}
+  m_Children: []
+  m_Father: {fileID: 1555255624}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1837446066
 GameObject:
   m_ObjectHideFlags: 0

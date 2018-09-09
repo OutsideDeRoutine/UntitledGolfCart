@@ -38,27 +38,6 @@ public class CharControlller : MonoBehaviour {
         _controller.Move(move.normalized * Time.deltaTime * Speed + Vector3.up * gravity);
 
         _animator.SetInteger("walking", v>0? 1:v==0? h==0? 0: 1: -1);
-
-
-
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            RaycastHit hit;
-
-            if (Physics.Raycast(Armature.position, this.transform.forward, out hit))
-            {
-                Debug.DrawRay(Armature.position, this.transform.forward);
-                UseCar uc = hit.transform.GetComponent<UseCar>();
-                if (uc)
-                {
-                    uc.StartUsing(this.gameObject);
-                    _animator.SetInteger("walking", 0);
-                    _animator.SetBool("Driving", true);
-                }
-                
-            }
-        }
     }
 
 
@@ -88,10 +67,43 @@ public class CharControlller : MonoBehaviour {
         if(Quaternion.Angle(Armature.rotation, grot)!=0)
             _timeCount += Time.deltaTime*1f;
         _srot = Armature.rotation;
+
+
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(Armature.position, this.transform.forward, out hit))
+            {
+                Debug.DrawRay(Armature.position, this.transform.forward);
+                IUsable iu = hit.transform.GetComponent<IUsable>();
+                if (iu != null)
+                {
+                    iu.StartUsing(this.gameObject);
+                }
+
+            }
+        }
     }
 
     public void rotate(float h)
     {
         this.transform.Rotate(this.transform.up, h * RotSpeed);
     }
+
+
+    public void EnterCar(){
+        _animator.SetInteger("walking", 0);
+        _animator.SetBool("Driving", true);
+        Camera.main.GetComponent<CameraController>().altUse = true;
+        this.GetComponent<CharacterController>().enabled = false;
+    }
+
+    public void ExitCar(){
+        _animator.SetBool("Driving", false);
+        Camera.main.GetComponent<CameraController>().altUse = false;
+        this.GetComponent<CharacterController>().enabled = true;
+    }
+
 }
