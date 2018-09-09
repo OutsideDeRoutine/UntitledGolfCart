@@ -184,7 +184,6 @@ public class CarController : MonoBehaviour {
         else
         {
             float a = angle(position, direction, velocity);
-            Debug.Log((a));
             if (Mathf.Abs(a)> 90)
             {
                 state = CarState.Backwards;
