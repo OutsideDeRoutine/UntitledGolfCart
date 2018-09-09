@@ -75,13 +75,11 @@ public class CarController : MonoBehaviour {
         float vel = velocity.magnitude;
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
-        float h = Input.GetAxis("Horizontal") / 6;
-        steering = h* maxSteeringAngle; // <----ARREGLAR EL SISTEMA DE GIRO ( TO DO (?) )
+        //PRUEBA
+        Camera.main.fieldOfView = 90 + vel;
 
-        /*float fit = h == 0 ? (steering == 0 ? 0 : (steering > 0 ? -vel : vel) / 2) : h * 4; 
-        if (fit != h * 4)
-            steering += steering > 0 ? (steering + fit < 0 ? -steering : fit) : (steering + fit > 0 ? -steering : fit);
-        else steering += h * 4;*/
+        float h = Input.GetAxis("Horizontal") / 6;
+        steering = h* maxSteeringAngle;
 
         steering = Mathf.Clamp(steering, -maxSteeringAtVel, maxSteeringAtVel);
 

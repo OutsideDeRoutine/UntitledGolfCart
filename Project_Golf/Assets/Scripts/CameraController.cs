@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour {
     [SerializeField] float velocity = 1;
     public Transform LookAtMe;
 
-    private bool inUse;
+    public bool altUse;
 
     void Update()
     {
@@ -17,12 +17,20 @@ public class CameraController : MonoBehaviour {
 
     private void MouseMove()
     {
+
         var h = Input.GetAxis("Mouse X");
 
         var v = Input.GetAxis("Mouse Y");
         transform.RotateAround(LookAtMe.position, transform.right, -v * mouseSensitivity);
         
-        this.GetComponentInParent<CharControlller>().rotate(h);
-    }
+        if (!altUse)
+        {
+            this.GetComponentInParent<CharControlller>().rotate(h);
+            if(transform.localRotation.y!=0)
+                transform.RotateAround(LookAtMe.position, Vector3.up,  -transform.localRotation.y*10);
+        }
+        else transform.RotateAround(LookAtMe.position, Vector3.up, h * mouseSensitivity);
+    }   
+
 
 }

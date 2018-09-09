@@ -37,7 +37,28 @@ public class CharControlller : MonoBehaviour {
         Vector3 move = this.transform.forward* v + this.transform.right *h;
         _controller.Move(move.normalized * Time.deltaTime * Speed + Vector3.up * gravity);
 
-        _animator.SetInteger("walking", v>0? 1:v==0? h==0? 0: 1: -1);        
+        _animator.SetInteger("walking", v>0? 1:v==0? h==0? 0: 1: -1);
+
+
+
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            RaycastHit hit;
+
+            if (Physics.Raycast(Armature.position, this.transform.forward, out hit))
+            {
+                Debug.DrawRay(Armature.position, this.transform.forward);
+                UseCar uc = hit.transform.GetComponent<UseCar>();
+                if (uc)
+                {
+                    uc.StartUsing(this.gameObject);
+                    _animator.SetInteger("walking", 0);
+                    _animator.SetBool("Driving", true);
+                }
+                
+            }
+        }
     }
 
 
