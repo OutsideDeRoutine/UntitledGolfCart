@@ -20,6 +20,9 @@ public class CharControlller : MonoBehaviour {
     {
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
+
+
+        _srot = Armature.rotation;
     }
 
     void Update()
@@ -37,13 +40,33 @@ public class CharControlller : MonoBehaviour {
         _animator.SetInteger("walking", v>0? 1:v==0? h==0? 0: 1: -1);        
     }
 
+
+    private float _timeCount = 0.0f;
+    private float _angle = 0.0f;
+    private Quaternion _srot;
     void LateUpdate()
     {
         Vector3 dir=_controller.velocity.normalized;
         Debug.DrawRay(_controller.transform.position, dir,Color.red);
-        float t = Mathf.Abs(v) <= 0.1 ? 0 : v > 0 ? 1 : -1;
-        float angle = h == 0 ? 0 : t == 0 ? h * 90 : h * t * 45;
-        Armature.Rotate(Vector3.forward * Time.deltaTime, angle);
+
+        v = Mathf.Abs(v) == 0 ? 0 : v > 0 ? 1 : -1;
+        h = Mathf.Abs(h) == 0 ? 0 : h > 0 ? 1 : -1;
+        float angle = h == 0 ? 0 : v == 0 ? h * 90 : h * v * 45;
+        if(angle != _angle)
+        {
+            _angle= angle;
+            _timeCount = Time.deltaTime;
+        }
+
+        Armature.Rotate(Vector3.forward, angle);
+
+        Quaternion grot = Armature.rotation;
+
+        Armature.rotation = Quaternion.Lerp(_srot, grot, _timeCount);
+
+        if(Quaternion.Angle(Armature.rotation, grot)!=0)
+            _timeCount += Time.deltaTime*1f;
+        _srot = Armature.rotation;
     }
 
     public void rotate(float h)
