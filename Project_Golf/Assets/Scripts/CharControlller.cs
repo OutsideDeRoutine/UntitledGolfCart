@@ -107,6 +107,7 @@ public class CharControlller : MonoBehaviour {
     public void ExitCar(){
         _animator.SetBool("Driving", false);
         Camera.main.GetComponent<CameraController>().altUse = false;
+        Camera.main.fieldOfView = 90;
         this.GetComponent<CharacterController>().enabled = true;
         StartCoroutine(unUse());
 

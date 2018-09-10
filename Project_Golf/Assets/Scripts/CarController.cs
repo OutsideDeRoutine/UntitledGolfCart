@@ -80,7 +80,7 @@ public class CarController : MonoBehaviour {
         float vel = velocity.magnitude;
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
-        Camera.main.fieldOfView = 90 + vel;
+        if(!HandBrake) Camera.main.fieldOfView = 90 + vel;
 
         float h = Input.GetAxis("Horizontal") / 6;
         steering = h* maxSteeringAngle;
