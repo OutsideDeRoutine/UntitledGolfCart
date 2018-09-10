@@ -5,22 +5,18 @@ using UnityEngine;
 public class UseCar : AbstractUsable{
 
     public Transform CharPosIn;
-
     public Transform CharPosOutR;
     public Transform CharPosOutL;
 
-
-    //TODO -> arreglar giros del personaje dentro y fuera del coche.
     //TODO -> comprobar cual es el mejor lado para salir [ L | R ]
     void Update () {
         if (isUsing)
         {
             user.transform.position = CharPosIn.position;
             user.transform.rotation = CharPosIn.rotation;
-            if ( Input.GetKeyDown(KeyCode.E))
+            if ( Input.GetKeyDown(KeyCode.E) && this.GetComponent<Rigidbody>().velocity.magnitude<10)
             {
-                user.transform.position = CharPosOutR.position;
-                
+                user.transform.position = CharPosOutL.position;
                 EndUsing();
             }
         }
@@ -31,8 +27,7 @@ public class UseCar : AbstractUsable{
         user.GetComponent<CharControlller>().EnterCar();
         user.GetComponent<CharControlller>().enabled = false;
 
-        this.GetComponent<BoxCollider>().enabled = false;
-        this.GetComponent<CarController>().enabled = true;
+        EnterCar();
     }
 
     public override void OnEnd()
@@ -40,9 +35,28 @@ public class UseCar : AbstractUsable{
         user.GetComponent<CharControlller>().enabled = true;
         user.GetComponent<CharControlller>().ExitCar();
 
+        ExitCar();
+    }
 
-        //TODO -> parar coche.
-        this.GetComponent<CarController>().enabled = false;
-        this.GetComponent<BoxCollider>().enabled = true;
+
+
+
+    internal void EnterCar()
+    {
+        GetComponent<CarController>().enabled = true;
+        GetComponent<CarController>().HandBrake = false;
+        GetComponent<BoxCollider>().enabled = false;
+    }
+    internal void ExitCar()
+    {
+        StartCoroutine(untilBreak());
+    }
+
+    IEnumerator untilBreak()
+    {
+        GetComponent<CarController>().HandBrake = true;
+        yield return new WaitUntil(() => GetComponent<Rigidbody>().velocity.magnitude == 0);
+        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<CarController>().enabled = false;
     }
 }

@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CharControlller : MonoBehaviour {
+
+    public bool inUse;
 
     public float Mass;
     public float Speed;
@@ -40,6 +43,7 @@ public class CharControlller : MonoBehaviour {
         _animator.SetInteger("walking", v>0? 1:v==0? h==0? 0: 1: -1);
     }
 
+   
 
     private float _timeCount = 0.0f;
     private float _angle = 0.0f;
@@ -70,7 +74,7 @@ public class CharControlller : MonoBehaviour {
 
 
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && !inUse)
         {
             RaycastHit hit;
 
@@ -94,16 +98,23 @@ public class CharControlller : MonoBehaviour {
 
 
     public void EnterCar(){
+        inUse = true;
         _animator.SetInteger("walking", 0);
         _animator.SetBool("Driving", true);
         Camera.main.GetComponent<CameraController>().altUse = true;
         this.GetComponent<CharacterController>().enabled = false;
     }
-
     public void ExitCar(){
         _animator.SetBool("Driving", false);
         Camera.main.GetComponent<CameraController>().altUse = false;
         this.GetComponent<CharacterController>().enabled = true;
-    }
+        StartCoroutine(unUse());
 
+        this.transform.rotation = Quaternion.Euler( Vector3.up * this.transform.rotation.eulerAngles.y );
+    }
+    IEnumerator unUse()
+    {
+        yield return new WaitForEndOfFrame();
+        inUse = false;
+    }
 }

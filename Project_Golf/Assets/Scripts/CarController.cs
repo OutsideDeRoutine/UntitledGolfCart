@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ public class CarController : MonoBehaviour {
     public float brake;
 
     public CarState state;
+
+    public bool HandBrake;
 
     private void Start()
     {
@@ -60,6 +63,8 @@ public class CarController : MonoBehaviour {
     }
 
     private float steering;
+
+
     public void FixedUpdate()
     {
         Vector3 velocity = GetComponent<Rigidbody>().velocity;
@@ -86,86 +91,97 @@ public class CarController : MonoBehaviour {
 
         foreach (AxleInfo axleInfo in axleInfos)
         {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = steering;
-                axleInfo.rightWheel.steerAngle = steering;
-            }
-
-             if (axleInfo.motor)
+            if (!HandBrake)
             {
                 axleInfo.leftWheel.brakeTorque = 0;
                 axleInfo.rightWheel.brakeTorque = 0;
-                switch (state)
+
+                if (axleInfo.steering)
                 {
-                    case (CarState.Stopped):
-                        axleInfo.leftWheel.motorTorque = motoraceleration;
-                        axleInfo.rightWheel.motorTorque = motoraceleration;
-                        break;
-
-                    case (CarState.Forwards):
-                        if (v >= 0)
-                        {
-                            axleInfo.leftWheel.motorTorque = motoraceleration;
-                            axleInfo.rightWheel.motorTorque = motoraceleration;
-                        }
-                        else
-                        {
-                            axleInfo.leftWheel.brakeTorque = motorbreak;
-                            axleInfo.rightWheel.brakeTorque = motorbreak;
-                        }
-                        break;
-
-                    case (CarState.Backwards):
-                        if (v <= 0)
-                        {
-                            axleInfo.leftWheel.motorTorque = motoraceleration;
-                            axleInfo.rightWheel.motorTorque = motoraceleration;
-                        }
-                        else
-                        {
-                            axleInfo.leftWheel.brakeTorque = motorbreak;
-                            axleInfo.rightWheel.brakeTorque = motorbreak;
-                        }
-                        break;
+                    axleInfo.leftWheel.steerAngle = steering;
+                    axleInfo.rightWheel.steerAngle = steering;
                 }
-            }
-            else
-            {
-                if (Mathf.Abs(vel) > 0)
+
+                if (axleInfo.motor)
+                {
+                    axleInfo.leftWheel.brakeTorque = 0;
+                    axleInfo.rightWheel.brakeTorque = 0;
                     switch (state)
                     {
                         case (CarState.Stopped):
-                            axleInfo.leftWheel.motorTorque = 0;
-                            axleInfo.rightWheel.motorTorque = 0;
+                            axleInfo.leftWheel.motorTorque = motoraceleration;
+                            axleInfo.rightWheel.motorTorque = motoraceleration;
                             break;
 
                         case (CarState.Forwards):
-                                axleInfo.leftWheel.motorTorque = -100;
-                                axleInfo.rightWheel.motorTorque = -100;       
-                            if (v < 0)
+                            if (v >= 0)
                             {
-                                axleInfo.leftWheel.motorTorque = -motorbreak;
-                                axleInfo.rightWheel.motorTorque = -motorbreak;
+                                axleInfo.leftWheel.motorTorque = motoraceleration;
+                                axleInfo.rightWheel.motorTorque = motoraceleration;
+                            }
+                            else
+                            {
+                                axleInfo.leftWheel.brakeTorque = motorbreak;
+                                axleInfo.rightWheel.brakeTorque = motorbreak;
                             }
                             break;
 
                         case (CarState.Backwards):
-
-                            axleInfo.leftWheel.motorTorque = 150;
-                            axleInfo.rightWheel.motorTorque = 150;
-                            if (v > 0)
+                            if (v <= 0)
                             {
-                                axleInfo.leftWheel.motorTorque = motorbreak;
-                                axleInfo.rightWheel.motorTorque = motorbreak;
+                                axleInfo.leftWheel.motorTorque = motoraceleration;
+                                axleInfo.rightWheel.motorTorque = motoraceleration;
+                            }
+                            else
+                            {
+                                axleInfo.leftWheel.brakeTorque = motorbreak;
+                                axleInfo.rightWheel.brakeTorque = motorbreak;
                             }
                             break;
                     }
+                }
                 else
                 {
-                    axleInfo.leftWheel.motorTorque = 0;
-                    axleInfo.rightWheel.motorTorque = 0;
+                    if (Mathf.Abs(vel) > 0)
+                        switch (state)
+                        {
+                            case (CarState.Stopped):
+                                axleInfo.leftWheel.motorTorque = 0;
+                                axleInfo.rightWheel.motorTorque = 0;
+                                break;
+
+                            case (CarState.Forwards):
+                                axleInfo.leftWheel.motorTorque = -100;
+                                axleInfo.rightWheel.motorTorque = -100;
+                                if (v < 0)
+                                {
+                                    axleInfo.leftWheel.motorTorque = -motorbreak;
+                                    axleInfo.rightWheel.motorTorque = -motorbreak;
+                                }
+                                break;
+
+                            case (CarState.Backwards):
+
+                                axleInfo.leftWheel.motorTorque = 150;
+                                axleInfo.rightWheel.motorTorque = 150;
+                                if (v > 0)
+                                {
+                                    axleInfo.leftWheel.motorTorque = motorbreak;
+                                    axleInfo.rightWheel.motorTorque = motorbreak;
+                                }
+                                break;
+                        }
+                    else
+                    {
+                        axleInfo.leftWheel.motorTorque = 0;
+                        axleInfo.rightWheel.motorTorque = 0;
+                    }
                 }
+            }
+            else
+            {
+                axleInfo.leftWheel.brakeTorque = 1000;
+                axleInfo.rightWheel.brakeTorque = 1000;
             }
 
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
@@ -179,7 +195,7 @@ public class CarController : MonoBehaviour {
     private void UpdateCarState(Vector3 position,Vector3 direction, Vector3 velocity)
     {
         
-        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.1f)
+        if (Mathf.Abs( Vector3.Distance(Vector3.zero, velocity))< 0.5f)
             state = CarState.Stopped;
         else
         {
@@ -194,7 +210,6 @@ public class CarController : MonoBehaviour {
             }
         }
     }
-
     private float angle(Vector3 a, Vector3 b, Vector3 c)
     {
         float C = Vector3.Distance(a, b);

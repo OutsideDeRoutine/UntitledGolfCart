@@ -29,7 +29,7 @@ public class CameraController : MonoBehaviour {
             if(transform.localRotation.y!=0)
                 transform.RotateAround(LookAtMe.position, Vector3.up,  -transform.localRotation.y*10);
         }
-        else transform.RotateAround(LookAtMe.position, Vector3.up, h * mouseSensitivity);
+        else transform.RotateAround(LookAtMe.position, LookAtMe.up, h * mouseSensitivity);
     }   
 
 
