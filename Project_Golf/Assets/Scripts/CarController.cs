@@ -187,8 +187,7 @@ public class CarController : MonoBehaviour {
             ApplyLocalPositionToVisuals(axleInfo.leftWheel);
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
         }
-
-        ApplySteeringWheelRot(steering);
+        if (!HandBrake)  ApplySteeringWheelRot(steering);
     }
 
 
