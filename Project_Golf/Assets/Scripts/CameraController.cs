@@ -5,11 +5,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     [SerializeField] float mouseSensitivity = 1;
-    [SerializeField] float velocity = 1;
     public Transform LookAtMe;
 
-    public bool altUse;
-
+    public enum CamState { Normal, AltUse, StaticAltUse };
+    public CamState CamUse;
     void Update()
     {
         MouseMove();
@@ -21,16 +20,26 @@ public class CameraController : MonoBehaviour {
         var h = Input.GetAxis("Mouse X");
 
         var v = Input.GetAxis("Mouse Y");
-        transform.RotateAround(LookAtMe.position, transform.right, -v * mouseSensitivity);
-        
-        if (!altUse)
+
+        switch (CamUse)
         {
-            this.GetComponentInParent<CharControlller>().rotate(h);
-            if(transform.localRotation.y!=0)
-                transform.RotateAround(LookAtMe.position, Vector3.up,  -transform.localRotation.y*10);
+            case (CamState.Normal):
+                transform.RotateAround(LookAtMe.position, transform.right, -v * mouseSensitivity);
+
+                this.GetComponentInParent<CharControlller>().rotate(h);
+                if (transform.localRotation.y != 0)
+                    transform.RotateAround(LookAtMe.position, Vector3.up, -transform.localRotation.y * 10);
+
+                break;
+            case (CamState.AltUse):
+                transform.RotateAround(LookAtMe.position, transform.right, -v * mouseSensitivity);
+
+                transform.RotateAround(LookAtMe.position, LookAtMe.up, h * mouseSensitivity);
+
+                break;
+            case (CamState.StaticAltUse):
+
+                break;
         }
-        else transform.RotateAround(LookAtMe.position, LookAtMe.up, h * mouseSensitivity);
-    }   
-
-
+    }
 }
