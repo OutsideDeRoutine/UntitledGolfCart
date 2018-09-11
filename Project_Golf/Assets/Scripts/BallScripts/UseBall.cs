@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UseBall : AbstractUsable {
 
-
+    public GameObject Ball;
     public Transform CharPos;
     public Transform CamPos;
     void Update() {
@@ -25,18 +25,31 @@ public class UseBall : AbstractUsable {
 
     public IEnumerator Swing(){
         //  1. CAMBIAR LA BOLA ESTATICA POR BOLA FISICA.
-
+        Ball.GetComponent<SphereCollider>().enabled = true;
+        Ball.GetComponent<Rigidbody>().isKinematic = false;
         //ESPERA A MOMENTO DEL GOLPE
         yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >0.6);
 
         //  2. HACER CALCULOS -> LANZAR BOLA 
+        Vector3 force = Vector3.forward * 5 + Vector3.up * 3; //TESTING
+
+        Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+        yield return new WaitForFixedUpdate();
+
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
 
-        //ESPERA A MOMENTO TERMINAR LA ANIMACION
-        yield return new WaitUntil(()=> user.GetComponent<CharControlller>().AnimationState("Swing") > 1); 
+        yield return new WaitUntil(() => Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.1f);
+        Ball.GetComponent<SphereCollider>().enabled = false;
+        Ball.GetComponent<Rigidbody>().isKinematic = true;
+ 
         
         EndUsing();
-        //  5. CAMBIAR LA BOLA FISICA POR BOLA ESTATICA.
+        //  5. MOVER TODO A LA POSICION DE LA BOLA.
+        Vector3 pos = Ball.transform.localPosition;
+        this.transform.Translate(pos);
+
+        Ball.transform.localPosition = Vector3.zero;
+
     }
 
     public override void OnStart()
