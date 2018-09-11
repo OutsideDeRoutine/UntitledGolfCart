@@ -7,9 +7,17 @@ public class UseBall : AbstractUsable {
     public GameObject Ball;
     public Transform CharPos;
     public Transform CamPos;
+
+    public bool InUse;
     void Update() {
-        if (isUsing)
+        if (isUsing && !InUse)
         {
+            float h = Input.GetAxis("Horizontal");
+
+            this.transform.Rotate(this.transform.up, h );
+            user.transform.position = CharPos.position;
+            user.transform.rotation = CharPos.rotation;
+
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -24,32 +32,47 @@ public class UseBall : AbstractUsable {
     }
 
     public IEnumerator Swing(){
+        InUse = true;
+        //ESPERA A MOMENTO DEL GOLPE
+        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >0.55);
+
         //  1. CAMBIAR LA BOLA ESTATICA POR BOLA FISICA.
         Ball.GetComponent<SphereCollider>().enabled = true;
         Ball.GetComponent<Rigidbody>().isKinematic = false;
-        //ESPERA A MOMENTO DEL GOLPE
-        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >0.6);
 
         //  2. HACER CALCULOS -> LANZAR BOLA 
-        Vector3 force = Vector3.forward * 5 + Vector3.up * 3; //TESTING
-
+        Vector3 force = this.transform.forward * 5 + this.transform.up * 10; //TESTING
+        
         Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+
+        Vector3 torque = this.transform.right * 100; //TESTING
+
+        Ball.GetComponent<Rigidbody>().AddTorque(torque, ForceMode.Impulse);
+
         yield return new WaitForFixedUpdate();
+       
 
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
 
-        yield return new WaitUntil(() => Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.1f);
+        yield return new WaitUntil(() => WhileBallMoving());
         Ball.GetComponent<SphereCollider>().enabled = false;
         Ball.GetComponent<Rigidbody>().isKinematic = true;
  
         
         EndUsing();
-        //  5. MOVER TODO A LA POSICION DE LA BOLA.
+
+        //  4. MOVER TODO A LA POSICION DE LA BOLA.
         Vector3 pos = Ball.transform.localPosition;
         this.transform.Translate(pos);
 
         Ball.transform.localPosition = Vector3.zero;
+        InUse = false;
+    }
 
+    public bool WhileBallMoving()
+    {
+        Camera.main.transform.position = Ball.transform.position - this.transform.forward / 2 + Vector3.up/10;
+        return Ball.GetComponent<Rigidbody>().velocity.magnitude == 0;
     }
 
     public override void OnStart()

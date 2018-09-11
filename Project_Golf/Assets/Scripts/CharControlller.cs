@@ -141,6 +141,8 @@ public class CharControlller : MonoBehaviour {
 
     private Vector3 lastCamPos;
     private Quaternion lastCamRot;
+    private Vector3 lastCharPos;
+    private Quaternion lastCharot;
     public void EnterSwing(Transform camPos)
     {
         inUse = true;
@@ -149,12 +151,16 @@ public class CharControlller : MonoBehaviour {
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;
         lastCamPos = mainCamera.transform.position;
         lastCamRot = mainCamera.transform.rotation;
+        lastCharPos = this.transform.position;
+        lastCharot = this.transform.rotation;
         //POSICIONAR CAMARA
         mainCamera.transform.position = camPos.position;
         mainCamera.transform.rotation = camPos.rotation;
     }
     public void ExitSwing()
     {
+        this.transform.position = lastCharPos;
+        this.transform.rotation = lastCharot;
         mainCamera.transform.position = lastCamPos;
         mainCamera.transform.rotation = lastCamRot;
         _animator.SetBool("swinging", false);
@@ -164,6 +170,7 @@ public class CharControlller : MonoBehaviour {
 
     public void Swing()
     {
+
         _animator.SetTrigger("swing");
     }
 }
