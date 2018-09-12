@@ -49,6 +49,9 @@ public class CharControlller : MonoBehaviour {
 
     private float _timeCount = 0.0f;
     private float _angle = 0.0f;
+
+
+
     private Quaternion _srot;
     void LateUpdate()
     {
@@ -159,18 +162,37 @@ public class CharControlller : MonoBehaviour {
     }
     public void ExitSwing()
     {
+        swinging = false;
+        StartCoroutine(GoBackCam());
+        _animator.SetBool("swinging", false);
+    }
+
+    private IEnumerator GoBackCam()
+    {
+        yield return new WaitUntil(() => AnimationState("Iddle") >= 1);
+        yield return new WaitForEndOfFrame();
+
         this.transform.position = lastCharPos;
         this.transform.rotation = lastCharot;
         mainCamera.transform.position = lastCamPos;
         mainCamera.transform.rotation = lastCamRot;
-        _animator.SetBool("swinging", false);
+
+        //MIRAR A LA BOLA!
+        
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
+
         StartCoroutine(unUse());
+    }
+
+    private bool swinging;
+    internal Vector3 GetSwingForce(Vector3 forward, Vector3 up)
+    {
+        return forward * 10 + up * 10; //TESTING
     }
 
     public void Swing()
     {
-
+        swinging = true;
         _animator.SetTrigger("swing");
     }
 }

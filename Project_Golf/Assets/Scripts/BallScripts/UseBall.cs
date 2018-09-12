@@ -41,15 +41,15 @@ public class UseBall : AbstractUsable {
         Ball.GetComponent<Rigidbody>().isKinematic = false;
 
         //  2. HACER CALCULOS -> LANZAR BOLA 
-        Vector3 force = this.transform.forward * 2 + this.transform.up * 5; //TESTING
-        
+        Vector3 force = user.GetComponent<CharControlller>().GetSwingForce(transform.forward,transform.up);
+
         Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
-        Vector3 torque = this.transform.right * 10; //TESTING
+        Vector3 torque = GetSwingTorque(); 
 
         Ball.GetComponent<Rigidbody>().AddTorque(torque, ForceMode.Impulse);
 
-        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >= 0.8);
+        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >= 0.6);
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
 
         yield return new WaitUntil(() => WhileBallMoving());
@@ -85,6 +85,14 @@ public class UseBall : AbstractUsable {
 
         return Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.02f;
     }
+
+
+    internal Vector3 GetSwingTorque()
+    {
+        return this.transform.right * 100; //TESTING
+    }
+
+
 
     public override void OnStart()
     {
