@@ -15,9 +15,9 @@ public class UseBall : AbstractUsable {
             float h = Input.GetAxis("Horizontal");
 
             this.transform.Rotate(this.transform.up, h );
+
             user.transform.position = CharPos.position;
             user.transform.rotation = CharPos.rotation;
-
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -32,7 +32,9 @@ public class UseBall : AbstractUsable {
     }
 
     public IEnumerator Swing(){
+
         InUse = true;
+
         //ESPERA A MOMENTO DEL GOLPE
         yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >0.55);
 
@@ -50,9 +52,10 @@ public class UseBall : AbstractUsable {
         Ball.GetComponent<Rigidbody>().AddTorque(torque, ForceMode.Impulse);
 
         yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >= 0.6);
-        //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
 
+        //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
         yield return new WaitUntil(() => WhileBallMoving());
+
         Ball.GetComponent<SphereCollider>().enabled = false;
         Ball.GetComponent<Rigidbody>().isKinematic = true;
  
@@ -61,14 +64,16 @@ public class UseBall : AbstractUsable {
 
         //  4. MOVER TODO A LA POSICION DE LA BOLA.
         Vector3 pos = Ball.transform.localPosition;
+
         this.transform.Translate(pos);
 
         Ball.transform.localPosition = Vector3.zero;
+
         InUse = false;
     }
 
-    public float smoothCamPos = 0.2f;
-    public float smoothCamRot = 0.3f;
+    public float smoothCamPos = 20;
+    public float smoothCamRot = 25;
     private Vector3 velocity = Vector3.zero;
     private Transform cam;
 
@@ -76,38 +81,37 @@ public class UseBall : AbstractUsable {
     {
         cam = Camera.main.transform;
     }
+
     public bool WhileBallMoving()
     {
-        cam.position = Vector3.SmoothDamp(Camera.main.transform.position , Ball.transform.position - this.transform.forward / 2 + Vector3.up/10, ref velocity, smoothCamPos);
+        cam.position = Vector3.SmoothDamp(Camera.main.transform.position , Ball.transform.position - this.transform.forward / 1.7f + Vector3.up/10, ref velocity, smoothCamPos * Time.deltaTime);
         Quaternion rot = cam.rotation;
-        cam.LookAt(Ball.transform.position);
-        cam.rotation = Quaternion.RotateTowards(rot, cam.transform.rotation,Time.time * smoothCamRot);
+        cam.LookAt(Ball.transform.position - Ball.GetComponent<Rigidbody>().velocity/20);
+        cam.rotation = Quaternion.RotateTowards(rot, cam.transform.rotation ,Time.deltaTime * smoothCamRot);
 
         return Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.02f;
     }
 
-
     internal Vector3 GetSwingTorque()
     {
-        return this.transform.right * 100; //TESTING
+        return this.transform.right * 100;
     }
-
-
 
     public override void OnStart()
     {
         user.transform.position = CharPos.position;
         user.transform.rotation = CharPos.rotation;
+
         user.GetComponent<CharControlller>().EnterSwing(CamPos);
+
         GetComponent<BoxCollider>().enabled = false;
-        
     }
 
 
     public override void OnEnd()
     {
-        user.GetComponent<CharControlller>().ExitSwing();
-        GetComponent<BoxCollider>().enabled = true;
+        user.GetComponent<CharControlller>().ExitSwing(Ball.transform.position);
 
+        GetComponent<BoxCollider>().enabled = true;
     }
 }

@@ -103,12 +103,9 @@ public class CharControlller : MonoBehaviour {
 
     public void rotate(float h)
     {
-        this.transform.Rotate(this.transform.up, h * RotSpeed);
+        if(!inUse)
+            this.transform.Rotate(this.transform.up, h * RotSpeed);
     }
-
-
-
-
 
     internal float AnimationState(string name)
     {
@@ -118,6 +115,7 @@ public class CharControlller : MonoBehaviour {
     IEnumerator unUse()
     {
         yield return new WaitForEndOfFrame();
+
         inUse = false;
     }
 
@@ -125,16 +123,22 @@ public class CharControlller : MonoBehaviour {
 
     public void EnterCar(){
         inUse = true;
+
         _animator.SetInteger("walking", 0);
         _animator.SetBool("Driving", true);
+
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.AltUse;
+
         this.GetComponent<CharacterController>().enabled = false;
     }
     public void ExitCar(){
         _animator.SetBool("Driving", false);
+
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
         mainCamera.fieldOfView = 90;
+
         this.GetComponent<CharacterController>().enabled = true;
+
         StartCoroutine(unUse());
 
         this.transform.rotation = Quaternion.Euler( Vector3.up * this.transform.rotation.eulerAngles.y );
@@ -142,57 +146,45 @@ public class CharControlller : MonoBehaviour {
 
     /*----------SWING-----------*/
 
-    private Vector3 lastCamPos;
-    private Quaternion lastCamRot;
-    private Vector3 lastCharPos;
-    private Quaternion lastCharot;
     public void EnterSwing(Transform camPos)
     {
         inUse = true;
+
         _animator.SetInteger("walking", 0);
         _animator.SetBool("swinging", true);
-        mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;
-        lastCamPos = mainCamera.transform.position;
-        lastCamRot = mainCamera.transform.rotation;
-        lastCharPos = this.transform.position;
-        lastCharot = this.transform.rotation;
-        //POSICIONAR CAMARA
+
+        mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;;
+
         mainCamera.transform.position = camPos.position;
         mainCamera.transform.rotation = camPos.rotation;
     }
-    public void ExitSwing()
+    public void ExitSwing(Vector3 lookAtMe)
     {
-        swinging = false;
-        StartCoroutine(GoBackCam());
         _animator.SetBool("swinging", false);
+        StartCoroutine(GoBackCam(lookAtMe));
     }
 
-    private IEnumerator GoBackCam()
+    private IEnumerator GoBackCam(Vector3 lookAtMe)
     {
-        yield return new WaitUntil(() => AnimationState("Iddle") >= 1);
+
+        mainCamera.GetComponent<CameraController>().Reset();
+
         yield return new WaitForEndOfFrame();
 
-        this.transform.position = lastCharPos;
-        this.transform.rotation = lastCharot;
-        mainCamera.transform.position = lastCamPos;
-        mainCamera.transform.rotation = lastCamRot;
-
-        //MIRAR A LA BOLA!
-        
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
+
+        yield return new WaitForEndOfFrame();
 
         StartCoroutine(unUse());
     }
 
-    private bool swinging;
     internal Vector3 GetSwingForce(Vector3 forward, Vector3 up)
     {
-        return forward * 10 + up * 10; //TESTING
+        return forward * 15 + up * 10; //TESTING
     }
 
     public void Swing()
     {
-        swinging = true;
         _animator.SetTrigger("swing");
     }
 }

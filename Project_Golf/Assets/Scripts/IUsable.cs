@@ -24,14 +24,14 @@ public abstract class AbstractUsable : MonoBehaviour, IUsable
     public void StartUsing(GameObject user)
     {
         this.user = user;
-        isUsing = true;
         OnStart();
+        isUsing = true;
     }
     public void EndUsing()
     {
+        isUsing = false;
         OnEnd();
         this.user = null;
-        isUsing = false;
     }
 
     public abstract void OnStart();

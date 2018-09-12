@@ -9,6 +9,16 @@ public class CameraController : MonoBehaviour {
 
     public enum CamState { Normal, AltUse, StaticAltUse };
     public CamState CamUse;
+
+    private Quaternion StartRot;
+    private Vector3 StartPos;
+
+    private void Start()
+    {
+        StartRot = transform.localRotation;
+        StartPos = transform.localPosition;
+    }
+
     void Update()
     {
         MouseMove();
@@ -41,5 +51,11 @@ public class CameraController : MonoBehaviour {
 
                 break;
         }
+    }
+
+    public void Reset()
+    {
+        transform.localRotation = StartRot;
+        transform.localPosition= StartPos;
     }
 }

@@ -821,6 +821,24 @@ Prefab:
       propertyPath: near clip plane
       value: 0.01
       objectReference: {fileID: 0}
+    - target: {fileID: 20025325244258970, guid: f3e1fcad2b0d0984db268cfde12dcb72,
+        type: 2}
+      propertyPath: m_CullingMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 114083520332201244, guid: f3e1fcad2b0d0984db268cfde12dcb72,
+        type: 2}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4370168852756698, guid: f3e1fcad2b0d0984db268cfde12dcb72, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4370168852756698, guid: f3e1fcad2b0d0984db268cfde12dcb72, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: -22.4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3e1fcad2b0d0984db268cfde12dcb72, type: 2}
   m_IsPrefabAsset: 0
@@ -1160,6 +1178,16 @@ Prefab:
     - target: {fileID: 4678188140428586, guid: e2344e67749348248bcdbbac970b8b5e, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114590058221607542, guid: e2344e67749348248bcdbbac970b8b5e,
+        type: 2}
+      propertyPath: smoothCamRot
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 114590058221607542, guid: e2344e67749348248bcdbbac970b8b5e,
+        type: 2}
+      propertyPath: smoothCamPos
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e2344e67749348248bcdbbac970b8b5e, type: 2}
