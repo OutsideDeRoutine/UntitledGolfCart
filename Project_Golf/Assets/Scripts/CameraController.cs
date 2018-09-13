@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour {
 
                 this.GetComponentInParent<CharControlller>().rotate(h);
                 if (transform.localRotation.y != 0)
-                    transform.RotateAround(LookAtMe.position, Vector3.up, -transform.localRotation.y * 10);
+                    transform.RotateAround(LookAtMe.position, Vector3.up, -transform.localRotation.y * 5);
 
                 break;
             case (CamState.AltUse):

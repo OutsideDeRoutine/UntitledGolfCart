@@ -99,6 +99,10 @@ public class CharControlller : MonoBehaviour {
             }
 
         }
+        else
+        {
+            _srot= Armature.rotation;
+        }
     }
 
     public void rotate(float h)
@@ -114,7 +118,7 @@ public class CharControlller : MonoBehaviour {
 
     IEnumerator unUse()
     {
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
 
         inUse = false;
     }
@@ -153,14 +157,13 @@ public class CharControlller : MonoBehaviour {
         _animator.SetInteger("walking", 0);
         _animator.SetBool("swinging", true);
 
-        mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;;
+        mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;
 
         mainCamera.transform.position = camPos.position;
         mainCamera.transform.rotation = camPos.rotation;
     }
     public void ExitSwing(Vector3 lookAtMe)
     {
-        _animator.SetBool("swinging", false);
         StartCoroutine(GoBackCam(lookAtMe));
     }
 
@@ -168,12 +171,13 @@ public class CharControlller : MonoBehaviour {
     {
 
         mainCamera.GetComponent<CameraController>().Reset();
+        mainCamera.transform.RotateAround(mainCamera.GetComponent<CameraController>().LookAtMe.position, Vector3.up, -90);
 
-        yield return new WaitForEndOfFrame();
+        yield return new WaitForFixedUpdate();
+
+        _animator.SetBool("swinging", false);
 
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
-
-        yield return new WaitForEndOfFrame();
 
         StartCoroutine(unUse());
     }
