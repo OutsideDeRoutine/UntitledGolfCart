@@ -204,12 +204,16 @@ public class CharControlller : MonoBehaviour {
     }
     public void ExitSwing(Vector3 lookAtMe)
     {
+        _animator.SetBool("swinging", false);
         stick.ss = GolfStick.StickState.Walk;
+
         StartCoroutine(GoBackCam(lookAtMe));
     }
 
     private IEnumerator GoBackCam(Vector3 lookAtMe)
     {
+
+        yield return new WaitForFixedUpdate();
 
         this.transform.LookAt(new Vector3(lookAtMe.x, this.transform.position.y, lookAtMe.z));
 
@@ -217,7 +221,7 @@ public class CharControlller : MonoBehaviour {
 
         yield return new WaitForFixedUpdate();
 
-        _animator.SetBool("swinging", false);
+       
 
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
 
