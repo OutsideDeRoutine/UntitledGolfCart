@@ -16,7 +16,16 @@ public class UseCar : AbstractUsable{
             user.transform.rotation = CharPosIn.rotation;
             if ( Input.GetKeyDown(KeyCode.E) && this.GetComponent<Rigidbody>().velocity.magnitude<10)
             {
-                user.transform.position = CharPosOutL.position;
+                if(!Physics.Raycast(this.transform.position,-this.transform.right, 2f))
+                    user.transform.position = CharPosOutL.position;
+                else if (!Physics.Raycast(this.transform.position, this.transform.right, 2f))
+                {
+                    user.transform.position = CharPosOutR.position;
+                }
+                else
+                {
+                    user.transform.position = this.transform.position + Vector3.up * 2 - this.transform.forward;
+                }
                 EndUsing();
             }
         }
@@ -25,14 +34,14 @@ public class UseCar : AbstractUsable{
     public override void OnStart()
     {
         user.GetComponent<CharControlller>().EnterCar();
-        user.GetComponent<CharControlller>().enabled = false;
+        //user.GetComponent<CharControlller>().enabled = false;
 
         EnterCar();
     }
 
     public override void OnEnd()
     {
-        user.GetComponent<CharControlller>().enabled = true;
+       // user.GetComponent<CharControlller>().enabled = true;
         user.GetComponent<CharControlller>().ExitCar();
 
         ExitCar();

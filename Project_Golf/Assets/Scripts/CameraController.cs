@@ -12,11 +12,13 @@ public class CameraController : MonoBehaviour {
 
     private Quaternion StartRot;
     private Vector3 StartPos;
+    private CharControlller cc;
 
     private void Start()
     {
         StartRot = transform.localRotation;
         StartPos = transform.localPosition;
+        cc = this.GetComponentInParent<CharControlller>();
     }
 
     void Update()
@@ -26,19 +28,24 @@ public class CameraController : MonoBehaviour {
 
     private void MouseMove()
     {
+        if (LookAtMe == null)
+        {
+            Debug.LogError("No se ha asignado LOOKATME al controlador de la camara.");
+            return;
+        }
 
-        var h = Input.GetAxis("Mouse X");
+        float h = Input.GetAxis("Mouse X");
 
-        var v = Input.GetAxis("Mouse Y");
+        float v = Input.GetAxis("Mouse Y");
 
         switch (CamUse)
         {
             case (CamState.Normal):
                 transform.RotateAround(LookAtMe.position, transform.right, -v * mouseSensitivity);
 
-                this.GetComponentInParent<CharControlller>().rotate(h);
+                cc.rotate(h);
                 if (transform.localRotation.y != 0)
-                    transform.RotateAround(LookAtMe.position, Vector3.up, -transform.localRotation.y * 5);
+                    transform.RotateAround(LookAtMe.position, Vector3.up, -transform.localRotation.y * 10);
 
                 break;
             case (CamState.AltUse):
@@ -56,6 +63,6 @@ public class CameraController : MonoBehaviour {
     public void Reset()
     {
         transform.localRotation = StartRot;
-        transform.localPosition= StartPos;
+        transform.localPosition = StartPos;
     }
 }

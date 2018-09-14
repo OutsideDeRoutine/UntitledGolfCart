@@ -6,6 +6,7 @@ using TMPro;
 
 public class UIPointBall : MonoBehaviour {
 
+    public Transform player;
     public GameObject ball;
     public bool show;
     public TMPro.TextMeshProUGUI text;
@@ -14,12 +15,14 @@ public class UIPointBall : MonoBehaviour {
     private Image img;
     private Color col;
 
+
     // Use this for initialization
     void Start () {
         show = true;
         cam = Camera.main;
         img = this.GetComponent<Image>();
         col = img.color;
+
     }
 	
 	// Update is called once per frame
@@ -29,7 +32,7 @@ public class UIPointBall : MonoBehaviour {
 
     void PositionArrow()
     {
-        text.text = ""+ Mathf.RoundToInt(Vector3.Distance(cam.transform.position, ball.transform.position));
+        text.text = ""+ Mathf.RoundToInt(Vector3.Distance(player.position, ball.transform.position));
         Vector3 v3Pos = Camera.main.WorldToViewportPoint(ball.transform.position);
         float fAngle;
 
@@ -42,7 +45,9 @@ public class UIPointBall : MonoBehaviour {
             fAngle = Mathf.Atan2(v3Pos.x, v3Pos.y);
             transform.localEulerAngles = new Vector3(0.0f, 0.0f, -fAngle * Mathf.Rad2Deg);
 
-            transform.localPosition = Vector3.zero - this.transform.up * 100;
+
+            transform.localPosition = Vector3.zero - this.transform.up * Screen.height/2.5f;
+
             return;
         }
 
@@ -63,6 +68,6 @@ public class UIPointBall : MonoBehaviour {
             fAngle = Mathf.Atan2(v3Pos.x, v3Pos.y);
             transform.localEulerAngles = new Vector3(0.0f, 0.0f, -fAngle * Mathf.Rad2Deg + 180);
 
-            transform.localPosition = Vector3.zero - this.transform.up * 100;
+            transform.localPosition = Vector3.zero - this.transform.up * Screen.height / 2.5f;
     }
 }

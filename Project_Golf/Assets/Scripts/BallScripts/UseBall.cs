@@ -99,6 +99,8 @@ public class UseBall : AbstractUsable {
 
     public override void OnStart()
     {
+        this.transform.LookAt(new Vector3( user.transform.position.x, this.transform.position.y, user.transform.position.z));
+        this.transform.Rotate(Vector3.up,90);
         user.transform.position = CharPos.position;
         user.transform.rotation = CharPos.rotation;
 

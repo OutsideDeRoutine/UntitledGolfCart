@@ -3,20 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class CharControlller : MonoBehaviour {
 
-    public bool inUse;
-
+    
     public float Mass;
     public float Speed;
     public float RotSpeed;
     private CharacterController _controller;
     private Animator _animator;
 
+    [System.Serializable]
+    public struct GolfStick
+    {
+        public GameObject stick;
+        public enum StickState { Walk, Swing, Car };
+        public StickState ss;
+        public Transform walkingPos;
+        public Transform swingingPos;
+        public Transform caringPos;
+    }
+
+    public GolfStick stick;
+
     [SerializeField]
     private Transform Armature;
 
     private Camera mainCamera;
+    private bool inUse;
+
 
     private float v;
     private float h;
@@ -103,6 +119,24 @@ public class CharControlller : MonoBehaviour {
         {
             _srot= Armature.rotation;
         }
+        if (stick.stick != null)
+        {
+            switch (stick.ss)
+            {
+                case (GolfStick.StickState.Car):
+                    stick.stick.transform.position = stick.caringPos.position;
+                    stick.stick.transform.rotation = stick.caringPos.rotation;
+                    break;
+                case (GolfStick.StickState.Swing):
+                    stick.stick.transform.position = stick.swingingPos.position;
+                    stick.stick.transform.rotation = stick.swingingPos.rotation;
+                    break;
+                case (GolfStick.StickState.Walk):
+                    stick.stick.transform.position = stick.walkingPos.position;
+                    stick.stick.transform.rotation = stick.walkingPos.rotation;
+                    break;
+            }
+        }
     }
 
     public void rotate(float h)
@@ -126,6 +160,9 @@ public class CharControlller : MonoBehaviour {
     /*----------CAR-----------*/
 
     public void EnterCar(){
+
+        stick.ss = GolfStick.StickState.Car;
+
         inUse = true;
 
         _animator.SetInteger("walking", 0);
@@ -136,6 +173,8 @@ public class CharControlller : MonoBehaviour {
         this.GetComponent<CharacterController>().enabled = false;
     }
     public void ExitCar(){
+        stick.ss = GolfStick.StickState.Walk;
+
         _animator.SetBool("Driving", false);
 
         mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.Normal;
@@ -152,6 +191,7 @@ public class CharControlller : MonoBehaviour {
 
     public void EnterSwing(Transform camPos)
     {
+        stick.ss = GolfStick.StickState.Swing;
         inUse = true;
 
         _animator.SetInteger("walking", 0);
@@ -164,14 +204,16 @@ public class CharControlller : MonoBehaviour {
     }
     public void ExitSwing(Vector3 lookAtMe)
     {
+        stick.ss = GolfStick.StickState.Walk;
         StartCoroutine(GoBackCam(lookAtMe));
     }
 
     private IEnumerator GoBackCam(Vector3 lookAtMe)
     {
 
+        this.transform.LookAt(new Vector3(lookAtMe.x, this.transform.position.y, lookAtMe.z));
+
         mainCamera.GetComponent<CameraController>().Reset();
-        mainCamera.transform.RotateAround(mainCamera.GetComponent<CameraController>().LookAtMe.position, Vector3.up, -90);
 
         yield return new WaitForFixedUpdate();
 
