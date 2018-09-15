@@ -8,7 +8,6 @@ public class UseCar : AbstractUsable{
     public Transform CharPosOutR;
     public Transform CharPosOutL;
 
-    //TODO -> comprobar cual es el mejor lado para salir [ L | R ]
     void Update () {
         if (isUsing)
         {
@@ -33,17 +32,13 @@ public class UseCar : AbstractUsable{
 
     public override void OnStart()
     {
-        user.GetComponent<CharControlller>().EnterCar();
-        //user.GetComponent<CharControlller>().enabled = false;
-
         EnterCar();
+        user.GetComponent<CharControlller>().EnterCar();
     }
 
     public override void OnEnd()
     {
-       // user.GetComponent<CharControlller>().enabled = true;
         user.GetComponent<CharControlller>().ExitCar();
-
         ExitCar();
     }
 
@@ -54,7 +49,6 @@ public class UseCar : AbstractUsable{
     {
         GetComponent<CarController>().enabled = true;
         GetComponent<CarController>().HandBrake = false;
-        GetComponent<BoxCollider>().enabled = false;
     }
     internal void ExitCar()
     {
@@ -65,7 +59,6 @@ public class UseCar : AbstractUsable{
     {
         GetComponent<CarController>().HandBrake = true;
         yield return new WaitUntil(() => GetComponent<Rigidbody>().velocity.magnitude == 0);
-        GetComponent<BoxCollider>().enabled = true;
         GetComponent<CarController>().enabled = false;
     }
 }
