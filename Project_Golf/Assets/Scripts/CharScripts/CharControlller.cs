@@ -105,10 +105,18 @@ public class CharControlller : MonoBehaviour {
                 if (Physics.Raycast(Armature.position, mainCamera.transform.forward, out hit))
                 {
                     Debug.DrawRay(Armature.position, this.transform.forward);
-                    IUsable iu = hit.transform.GetComponent<IUsable>();
+                    IUsable iu = hit.collider.transform.GetComponent<IUsable>();
                     if (iu != null)
                     {
                         iu.StartUsing(this.gameObject);
+                    }
+                    else
+                    {
+                        iu = hit.transform.GetComponent<IUsable>();
+                        if (iu != null)
+                        {
+                            iu.StartUsing(this.gameObject);
+                        }
                     }
 
                 }
