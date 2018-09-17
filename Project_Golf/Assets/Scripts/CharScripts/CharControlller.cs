@@ -14,6 +14,8 @@ public class CharControlller : MonoBehaviour {
     private CharacterController _controller;
     private Animator _animator;
 
+
+
     [System.Serializable]
     public struct GolfStick
     {
@@ -24,6 +26,8 @@ public class CharControlller : MonoBehaviour {
         public Transform swingingPos;
         public Transform caringPos;
     }
+
+
 
     public GolfStick stick;
 
@@ -244,5 +248,41 @@ public class CharControlller : MonoBehaviour {
     public void Swing()
     {
         _animator.SetTrigger("swing");
+    }
+
+    /*----------PICKING-----------*/
+
+    internal void EnterSelection(Transform camPos)
+    {
+        inUse = true;
+
+        _animator.SetInteger("walking", 0);
+
+        mainCamera.GetComponent<CameraController>().CamUse = CameraController.CamState.StaticAltUse;
+
+        mainCamera.transform.position = camPos.position;
+        mainCamera.transform.rotation = camPos.rotation;
+        if (stick.stick)
+        {
+            GameObject.Destroy(stick.stick);
+        }
+    }
+
+    internal void ExitSelection(GameObject sticker)
+    {
+        StartCoroutine(GoBackCam(this.transform.position+this.transform.forward));
+
+        StartCoroutine(setStick(sticker));
+      
+
+        StartCoroutine(unUse());
+    }
+
+    private IEnumerator setStick(GameObject sticker)
+    {
+
+        yield return new WaitForFixedUpdate();
+        stick.stick = sticker;
+
     }
 }
