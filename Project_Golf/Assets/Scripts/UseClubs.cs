@@ -11,30 +11,68 @@ public class UseClubs : AbstractUsable
 
     void Start()
     {
-        UpdatePosition();
+        UpdatePosition(false);
     }
 
+    private int roting;
+
     //ROTAR Y OPCION A SMOOTH
-    void UpdatePosition()
+    void UpdatePosition(bool smooth)
     {
-        for(int i= 0; i< stack.Count; i++)
+        if (roting==0)
         {
-            
-            stack[i].transform.localPosition = Vector3.zero;
+            Vector3 prev = Vector3.zero;
+            Quaternion preq = Quaternion.identity;
 
-            stack[i].transform.localRotation=Quaternion.Euler(Vector3.zero);
-
-            if (i == selected &&  isUsing)
+            for (int i = 0; i < stack.Count; i++)
             {
-                stack[i].transform.localPosition += this.transform.forward / 5;
+                if (smooth)
+                {
+                    prev = stack[i].transform.position;
+                    preq = stack[i].transform.rotation;
+                }
+
+                stack[i].transform.localPosition = Vector3.zero;
+
+                stack[i].transform.localRotation = Quaternion.Euler(Vector3.zero);
+
+                if (i == selected && isUsing)
+                {
+                    stack[i].transform.localPosition += this.transform.forward / 5;
+                }
+
+                float angle = ((i - (float)(selected)) / (float)(stack.Count)) * 360;
+
+                stack[i].transform.Rotate(this.transform.forward, angle - 90);
+
+                stack[i].transform.Translate(-this.transform.up / 10);
+
+                if (smooth)
+                {
+
+                    Vector3 prevt = stack[i].transform.position;
+                    Quaternion preqt = stack[i].transform.rotation;
+
+                    stack[i].transform.position = prev;
+
+                    stack[i].transform.rotation = preq;
+
+                    StartCoroutine(SmoothMove(stack[i], prevt, preqt));
+                }
             }
-
-            float angle = ((i-(float)(selected)) / (float)(stack.Count)) * 360;
-
-            stack[i].transform.Rotate(this.transform.forward, angle - 90);
-
-            stack[i].transform.Translate(-this.transform.up / 10);
         }
+    }
+
+    IEnumerator SmoothMove(GameObject go, Vector3 tov ,Quaternion toq)
+    {
+        roting++;
+        while (Vector3.Distance(go.transform.position, tov) + Quaternion.Angle(go.transform.rotation, toq) >= 1f)
+        {
+            go.transform.position = Vector3.Lerp(go.transform.position, tov, Time.deltaTime * 10);
+            go.transform.rotation = Quaternion.Slerp(go.transform.rotation, toq, Time.deltaTime * 10);
+            yield return new WaitForEndOfFrame();
+        }
+        roting--;
     }
 
     void Update()
@@ -50,13 +88,21 @@ public class UseClubs : AbstractUsable
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                Next();
-                UpdatePosition();
+                if (roting == 0)
+                {
+                    Next();
+                    UpdatePosition(true);
+                }
+                    
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                Prev();
-                UpdatePosition();
+                if (roting == 0)
+                {
+                    Prev();
+                    UpdatePosition(true);
+                }
+                    
             }
         }
     }
@@ -85,7 +131,7 @@ public class UseClubs : AbstractUsable
 
         GetComponent<BoxCollider>().enabled = true;
 
-        UpdatePosition();
+        UpdatePosition(false);
     }
 
     public override void OnStart()
@@ -96,6 +142,6 @@ public class UseClubs : AbstractUsable
 
         isUsing = true;
 
-        UpdatePosition();
+        UpdatePosition(false);
     }
 }
