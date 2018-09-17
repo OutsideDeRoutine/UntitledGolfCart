@@ -17,18 +17,23 @@ public class UseClubs : AbstractUsable
     //ROTAR Y OPCION A SMOOTH
     void UpdatePosition()
     {
-        int i = 0;
-        foreach (GameObject go in stack)
+        for(int i= 0; i< stack.Count; i++)
         {
-            if (i == selected)
+            
+            stack[i].transform.localPosition = Vector3.zero;
+
+            stack[i].transform.localRotation=Quaternion.Euler(Vector3.zero);
+
+            if (i == selected &&  isUsing)
             {
-                go.transform.localPosition += this.transform.forward / 5;
+                stack[i].transform.localPosition += this.transform.forward / 5;
             }
-            else
-            {
-                go.transform.localPosition = Vector3.zero;
-            }
-            i++;
+
+            float angle = ((i-(float)(selected)) / (float)(stack.Count)) * 360;
+
+            stack[i].transform.Rotate(this.transform.forward, angle - 90);
+
+            stack[i].transform.Translate(-this.transform.up / 10);
         }
     }
 
@@ -79,6 +84,8 @@ public class UseClubs : AbstractUsable
         user.GetComponent<CharControlller>().ExitSelection(Instantiate(stack[selected].gameObject));
 
         GetComponent<BoxCollider>().enabled = true;
+
+        UpdatePosition();
     }
 
     public override void OnStart()
@@ -86,5 +93,9 @@ public class UseClubs : AbstractUsable
         user.GetComponent<CharControlller>().EnterSelection(CamPos);
 
         GetComponent<BoxCollider>().enabled = false;
+
+        isUsing = true;
+
+        UpdatePosition();
     }
 }
