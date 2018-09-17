@@ -12,17 +12,11 @@ public class UIPointBall : MonoBehaviour {
     public TMPro.TextMeshProUGUI text;
     private Camera cam;
 
-    private Image img;
-    private Color col;
-
 
     // Use this for initialization
     void Start () {
         show = true;
         cam = Camera.main;
-        img = this.GetComponent<Image>();
-        col = img.color;
-
     }
 	
 	// Update is called once per frame

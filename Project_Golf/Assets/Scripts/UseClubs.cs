@@ -9,9 +9,33 @@ public class UseClubs : AbstractUsable
     int selected;
     public Transform CamPos;
 
+    void Start()
+    {
+        UpdatePosition();
+    }
+
+    //ROTAR Y OPCION A SMOOTH
+    void UpdatePosition()
+    {
+        int i = 0;
+        foreach (GameObject go in stack)
+        {
+            if (i == selected)
+            {
+                go.transform.localPosition += this.transform.forward / 5;
+            }
+            else
+            {
+                go.transform.localPosition = Vector3.zero;
+            }
+            i++;
+        }
+    }
 
     void Update()
     {
+
+        
         if (isUsing )
         {
 
@@ -22,10 +46,12 @@ public class UseClubs : AbstractUsable
             if (Input.GetKeyDown(KeyCode.A))
             {
                 Next();
+                UpdatePosition();
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
                 Prev();
+                UpdatePosition();
             }
         }
     }
