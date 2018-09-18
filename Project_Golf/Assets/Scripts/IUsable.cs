@@ -13,6 +13,9 @@ public interface IUsable
 
     void OnStart();
     void OnEnd();
+
+    string MessageToUse();
+    string MessageOnUse();
 }
 
 
@@ -36,4 +39,6 @@ public abstract class AbstractUsable : MonoBehaviour, IUsable
 
     public abstract void OnStart();
     public abstract void OnEnd();
+    public abstract string MessageToUse();
+    public abstract string MessageOnUse();
 }

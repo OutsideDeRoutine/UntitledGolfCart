@@ -138,4 +138,14 @@ public class UseClubs : AbstractUsable
 
         UpdatePosition(false);
     }
+
+    public override string MessageToUse()
+    {
+        return "[E] Select Club";
+    }
+
+    public override string MessageOnUse()
+    {
+        return "[A/D] Prev/Next \n[E] Select";
+    }
 }

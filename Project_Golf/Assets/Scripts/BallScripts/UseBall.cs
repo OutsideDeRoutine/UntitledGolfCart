@@ -116,4 +116,14 @@ public class UseBall : AbstractUsable {
 
         GetComponent<BoxCollider>().enabled = true;
     }
+
+    public override string MessageToUse()
+    {
+        return "[E] Use Ball";
+    }
+
+    public override string MessageOnUse()
+    {
+        return "[A/D] Left/Right \n[Space] Throw \n[E] Exit";
+    }
 }

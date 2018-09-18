@@ -61,4 +61,14 @@ public class UseCar : AbstractUsable{
         yield return new WaitUntil(() => GetComponent<Rigidbody>().velocity.magnitude == 0);
         GetComponent<CarController>().enabled = false;
     }
+
+    public override string MessageToUse()
+    {
+        return "[E] Use Car";
+    }
+
+    public override string MessageOnUse()
+    {
+        return "[E] Exit";
+    }
 }

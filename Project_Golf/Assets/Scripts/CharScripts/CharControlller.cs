@@ -14,6 +14,8 @@ public class CharControlller : MonoBehaviour {
     private CharacterController _controller;
     private Animator _animator;
 
+    public TMPro.TextMeshProUGUI text;
+
 
 
     [System.Serializable]
@@ -100,29 +102,34 @@ public class CharControlller : MonoBehaviour {
                 _timeCount += Time.deltaTime*1f;
             _srot = Armature.rotation;
 
-
-
-            if (Input.GetKeyDown(KeyCode.E) )
+            RaycastHit hit;
+            
+            if (Physics.Raycast(Armature.position, mainCamera.transform.forward, out hit))
             {
-                RaycastHit hit;
-
-                if (Physics.Raycast(Armature.position, mainCamera.transform.forward, out hit))
-                {
                     Debug.DrawRay(Armature.position, this.transform.forward);
                     IUsable iu = hit.collider.transform.GetComponent<IUsable>();
-                    if (iu != null)
+                    if (  iu != null)
                     {
-                        iu.StartUsing(this.gameObject);
+                        text.text = iu.MessageToUse();
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            text.text = iu.MessageOnUse();
+                            iu.StartUsing(this.gameObject);
+                        }
+                            
                     }
                     else
                     {
                         iu = hit.transform.GetComponent<IUsable>();
                         if (iu != null)
                         {
-                            iu.StartUsing(this.gameObject);
-                        }
-                    }
-
+                            text.text = iu.MessageToUse();
+                            if (Input.GetKeyDown(KeyCode.E))
+                            {
+                                text.text = iu.MessageOnUse();
+                                iu.StartUsing(this.gameObject);
+                            } 
+                        }else text.text = "";
                 }
             }
 
@@ -165,7 +172,7 @@ public class CharControlller : MonoBehaviour {
     IEnumerator unUse()
     {
         yield return new WaitForFixedUpdate();
-
+        text.text = "";
         inUse = false;
     }
 
