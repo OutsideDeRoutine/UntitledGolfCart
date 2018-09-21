@@ -38,7 +38,7 @@ public class UseClubs : AbstractUsable
 
                 if (i == selected && isUsing)
                 {
-                    stack[i].transform.localPosition += -Vector3.forward / 5;
+                    stack[i].transform.localPosition += -Vector3.forward / 3;
                 }
 
                 float angle = ((i - (float)(selected)) / (float)(stack.Count)) * 360;
@@ -78,17 +78,14 @@ public class UseClubs : AbstractUsable
 
     void Update()
     {
-
-        
         if (isUsing && roting == 0)
         {
-
             if (Input.GetKeyDown(KeyCode.E))
             {
 
                 EndUsing();
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if(Input.GetKeyDown(KeyCode.A))
             {
                     Next();
                     UpdatePosition(true);                    
@@ -96,7 +93,7 @@ public class UseClubs : AbstractUsable
             if (Input.GetKeyDown(KeyCode.D))
             {
                     Prev();
-                    UpdatePosition(true);   
+                    UpdatePosition(true);
             }
         }
     }
