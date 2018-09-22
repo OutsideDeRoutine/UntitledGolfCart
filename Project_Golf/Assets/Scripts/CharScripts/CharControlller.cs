@@ -166,6 +166,7 @@ public class CharControlller : MonoBehaviour {
 
     internal float AnimationState(string name)
     {
+        if ( name == "Swing" && (stick.stick!=null && stick.stick.GetComponent<ClubStats>().isPutt)) name = "ShortSwing";
         return (!_animator.GetCurrentAnimatorStateInfo(0).IsName(name))? 0 : _animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
     }
 
@@ -249,12 +250,16 @@ public class CharControlller : MonoBehaviour {
 
     internal Vector3 GetSwingForce(Vector3 forward, Vector3 up)
     {
-        return forward * 15 + up * 10; //TESTING
+        if (stick.stick == null) return Vector3.zero;
+        return forward * stick.stick.GetComponent<ClubStats>().forceXY.x + up * stick.stick.GetComponent<ClubStats>().forceXY.y; //TESTING
     }
 
     public void Swing()
     {
-        _animator.SetTrigger("swing");
+
+        if(stick.stick == null || !stick.stick.GetComponent<ClubStats>().isPutt)
+            _animator.SetTrigger("swing");
+        else _animator.SetTrigger("shortSwing");
     }
 
     /*----------PICKING-----------*/
@@ -279,7 +284,7 @@ public class CharControlller : MonoBehaviour {
     {
         StartCoroutine(GoBackCam(this.transform.position+this.transform.forward));
 
-        StartCoroutine(setStick(sticker));
+       if(sticker!=null) StartCoroutine(setStick(sticker));
       
 
         StartCoroutine(unUse());

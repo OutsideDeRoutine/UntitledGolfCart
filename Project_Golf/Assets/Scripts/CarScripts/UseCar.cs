@@ -33,12 +33,12 @@ public class UseCar : AbstractUsable{
     public override void OnStart()
     {
         EnterCar();
-        user.GetComponent<CharControlller>().EnterCar();
+        cc.EnterCar();
     }
 
     public override void OnEnd()
     {
-        user.GetComponent<CharControlller>().ExitCar();
+        cc.ExitCar();
         ExitCar();
     }
 

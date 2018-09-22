@@ -25,8 +25,8 @@ public class UseBall : AbstractUsable {
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                user.GetComponent<CharControlller>().Swing();
-                StartCoroutine(Swing());
+                cc.Swing();
+                if (cc.stick.stick != null) StartCoroutine(Swing());
             }
         }
     }
@@ -36,14 +36,16 @@ public class UseBall : AbstractUsable {
         InUse = true;
 
         //ESPERA A MOMENTO DEL GOLPE
-        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >0.55);
+        yield return new WaitUntil(() => cc.AnimationState("Swing") >0.55);
+
+       
 
         //  1. CAMBIAR LA BOLA ESTATICA POR BOLA FISICA.
         Ball.GetComponent<SphereCollider>().enabled = true;
         Ball.GetComponent<Rigidbody>().isKinematic = false;
 
         //  2. HACER CALCULOS -> LANZAR BOLA 
-        Vector3 force = user.GetComponent<CharControlller>().GetSwingForce(transform.forward,transform.up);
+        Vector3 force = cc.GetSwingForce(transform.forward,transform.up);
 
         Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
 
@@ -51,7 +53,7 @@ public class UseBall : AbstractUsable {
 
         Ball.GetComponent<Rigidbody>().AddTorque(torque, ForceMode.Impulse);
 
-        yield return new WaitUntil(() => user.GetComponent<CharControlller>().AnimationState("Swing") >= 0.6);
+        yield return new WaitUntil(() => cc.AnimationState("Swing") >= 0.6);
 
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
         yield return new WaitUntil(() => WhileBallMoving());
@@ -104,7 +106,7 @@ public class UseBall : AbstractUsable {
         user.transform.position = CharPos.position;
         user.transform.rotation = CharPos.rotation;
 
-        user.GetComponent<CharControlller>().EnterSwing(CamPos);
+        cc.EnterSwing(CamPos);
 
         GetComponent<BoxCollider>().enabled = false;
     }
@@ -112,7 +114,7 @@ public class UseBall : AbstractUsable {
 
     public override void OnEnd()
     {
-        user.GetComponent<CharControlller>().ExitSwing(Ball.transform.position);
+        cc.ExitSwing(Ball.transform.position);
 
         GetComponent<BoxCollider>().enabled = true;
     }

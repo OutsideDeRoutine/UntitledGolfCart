@@ -21,12 +21,15 @@ public interface IUsable
 
 public abstract class AbstractUsable : MonoBehaviour, IUsable
 {
+
     protected GameObject user;
     protected bool isUsing;
 
+    protected CharControlller cc;
     public void StartUsing(GameObject user)
     {
         this.user = user;
+        cc = user.GetComponent<CharControlller>();
         OnStart();
         isUsing = true;
     }
@@ -34,6 +37,7 @@ public abstract class AbstractUsable : MonoBehaviour, IUsable
     {
         isUsing = false;
         OnEnd();
+        cc = null;
         this.user = null;
     }
 

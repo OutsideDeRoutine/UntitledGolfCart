@@ -26,39 +26,42 @@ public class UseClubs : AbstractUsable
 
             for (int i = 0; i < stack.Count; i++)
             {
-                if (smooth)
+                if (stack[i])
                 {
-                    prev = stack[i].transform.position;
-                    preq = stack[i].transform.rotation;
-                }
+                    if (smooth)
+                    {
+                        prev = stack[i].transform.position;
+                        preq = stack[i].transform.rotation;
+                    }
 
-                stack[i].transform.localPosition = Vector3.zero;
+                    stack[i].transform.localPosition = Vector3.zero;
 
-                stack[i].transform.localRotation = Quaternion.Euler(Vector3.zero);
+                    stack[i].transform.localRotation = Quaternion.Euler(Vector3.zero);
 
-                if (i == selected && isUsing)
-                {
-                    stack[i].transform.localPosition += -Vector3.forward / 3;
-                }
+                    if (i == selected && isUsing)
+                    {
+                        stack[i].transform.localPosition += -Vector3.forward / 3;
+                    }
 
-                float angle = ((i - (float)(selected)) / (float)(stack.Count)) * 360;
+                    float angle = ((i - (float)(selected)) / (float)(stack.Count)) * 360;
 
-                stack[i].transform.Rotate(-Vector3.forward, angle - 90);
+                    stack[i].transform.Rotate(-Vector3.forward, angle - 90);
 
 
-                stack[i].transform.Translate(-Vector3.up / 10);
+                    stack[i].transform.Translate(-Vector3.up / 10);
 
-                if (smooth)
-                {
+                    if (smooth)
+                    {
 
-                    Vector3 prevt = stack[i].transform.position;
-                    Quaternion preqt = stack[i].transform.rotation;
+                        Vector3 prevt = stack[i].transform.position;
+                        Quaternion preqt = stack[i].transform.rotation;
 
-                    stack[i].transform.position = prev;
+                        stack[i].transform.position = prev;
 
-                    stack[i].transform.rotation = preq;
+                        stack[i].transform.rotation = preq;
 
-                    StartCoroutine(SmoothMove(stack[i], prevt, preqt));
+                        StartCoroutine(SmoothMove(stack[i], prevt, preqt));
+                    }
                 }
             }
         }
@@ -118,8 +121,8 @@ public class UseClubs : AbstractUsable
 
     public override void OnEnd()
     {
-        user.GetComponent<CharControlller>().ExitSelection(Instantiate(stack[selected].gameObject));
-
+        if (stack[selected]) user.GetComponent<CharControlller>().ExitSelection(Instantiate(stack[selected].gameObject));
+        else user.GetComponent<CharControlller>().ExitSelection(null);
         GetComponent<BoxCollider>().enabled = true;
 
         UpdatePosition(false);

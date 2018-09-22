@@ -9,19 +9,19 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1486236535372362}
+  m_RootGameObject: {fileID: 1363713390795666}
   m_IsPrefabAsset: 1
---- !u!1 &1486236535372362
+--- !u!1 &1363713390795666
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4107884600941332}
-  - component: {fileID: 33711793847502866}
-  - component: {fileID: 23579668006244322}
-  - component: {fileID: 95341441122702248}
+  - component: {fileID: 4996404260657012}
+  - component: {fileID: 33615609638680664}
+  - component: {fileID: 23572183614434518}
+  - component: {fileID: 114462161465612834}
   m_Layer: 0
   m_Name: clubWedge
   m_TagString: Untagged
@@ -29,28 +29,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4107884600941332
+--- !u!4 &4996404260657012
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486236535372362}
-  m_LocalRotation: {x: -0.09229548, y: 0.70105755, z: 0.70105743, w: 0.09229545}
-  m_LocalPosition: {x: 12.556, y: 0.551, z: -14.968}
-  m_LocalScale: {x: 0.12744662, y: 0.12744662, z: 0.12744662}
+  m_GameObject: {fileID: 1363713390795666}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: -0}
+  m_LocalScale: {x: 0.1274472, y: 0.1274472, z: 0.1274472}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 165.00002}
---- !u!23 &23579668006244322
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &23572183614434518
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486236535372362}
+  m_GameObject: {fileID: 1363713390795666}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -78,28 +78,23 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33711793847502866
+--- !u!33 &33615609638680664
 MeshFilter:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486236535372362}
+  m_GameObject: {fileID: 1363713390795666}
   m_Mesh: {fileID: 4300000, guid: d199549690f2987419273464ff5fd592, type: 3}
---- !u!95 &95341441122702248
-Animator:
-  serializedVersion: 3
+--- !u!114 &114462161465612834
+MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1486236535372362}
+  m_GameObject: {fileID: 1363713390795666}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: d199549690f2987419273464ff5fd592, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5370be2c18d1a74f935ee4397b512d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPutt: 0
+  forceXY: {x: 5, y: 10}
