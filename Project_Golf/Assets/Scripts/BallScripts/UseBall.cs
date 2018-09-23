@@ -9,6 +9,19 @@ public class UseBall : AbstractUsable {
     public Transform CamPos;
 
     public bool InUse;
+
+    [System.Serializable]
+    public class TW{
+        [Range(10.0f, 100.0f)]
+       public float fc= 100.0f;
+        [Range(10.0f, 100.0f)]
+        public float ht = 100.0f;
+        [Range(-1.0f, 1.0f)]
+        public float ac;
+    }
+
+    public TW tw;
+
     void Update() {
         if (isUsing && !InUse)
         {
@@ -31,7 +44,10 @@ public class UseBall : AbstractUsable {
         }
     }
 
-    public IEnumerator Swing(){
+    
+
+    public IEnumerator Swing()
+    {
 
         InUse = true;
 
@@ -45,17 +61,15 @@ public class UseBall : AbstractUsable {
         Ball.GetComponent<Rigidbody>().isKinematic = false;
 
         //  2. HACER CALCULOS -> LANZAR BOLA 
-        Vector3 force = cc.GetSwingForce(transform.forward,transform.up);
+        Vector3 force = cc.GetSwingForce(transform.forward * tw.fc / 100, transform.up * tw.ht / 100);
 
-        Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
-
-        Vector3 torque = GetSwingTorque(); 
-
-        Ball.GetComponent<Rigidbody>().AddTorque(torque, ForceMode.Impulse);
+        Ball.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
 
         yield return new WaitUntil(() => cc.AnimationState("Swing") >= 0.6);
 
+
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
+        cc.text.text = "[W] Speed Time";
         yield return new WaitUntil(() => WhileBallMoving());
 
         Ball.GetComponent<SphereCollider>().enabled = false;
@@ -86,12 +100,20 @@ public class UseBall : AbstractUsable {
 
     public bool WhileBallMoving()
     {
+
+        Ball.GetComponent<Rigidbody>().AddForce(transform.right * tw.ac * (Ball.GetComponent<Rigidbody>().velocity.magnitude / 200), ForceMode.VelocityChange);
+
         cam.position = Vector3.SmoothDamp(Camera.main.transform.position , Ball.transform.position - this.transform.forward / 1.7f + Vector3.up/10, ref velocity, smoothCamPos * Time.deltaTime);
         Quaternion rot = cam.rotation;
         cam.LookAt(Ball.transform.position - Ball.GetComponent<Rigidbody>().velocity/20);
         cam.rotation = Quaternion.RotateTowards(rot, cam.transform.rotation ,Time.deltaTime * smoothCamRot);
 
-        return Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.02f;
+        bool stopped = Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.02f;
+
+        if(!stopped && Input.GetKey(KeyCode.W)) Time.timeScale = 2f;
+        else Time.timeScale = 1f;
+
+        return stopped;
     }
 
     internal Vector3 GetSwingTorque()
