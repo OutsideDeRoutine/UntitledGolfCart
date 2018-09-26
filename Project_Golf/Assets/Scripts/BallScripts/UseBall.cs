@@ -8,6 +8,8 @@ public class UseBall : AbstractUsable {
     public Transform CharPos;
     public Transform CamPos;
 
+    public GameObject UIThrow;
+
     public bool InUse;
 
     [System.Serializable]
@@ -18,6 +20,8 @@ public class UseBall : AbstractUsable {
         public float ht = 100.0f;
         [Range(-1.0f, 1.0f)]
         public float ac;
+        [Range(-1.0f, 1.0f)]
+        public float ef;
     }
 
     public TW tw;
@@ -36,19 +40,20 @@ public class UseBall : AbstractUsable {
             {
                 EndUsing();
             }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                cc.Swing();
-                if (cc.stick.stick != null) StartCoroutine(Swing());
-            }
         }
     }
 
-    
+    public void StartSwing()
+    {
+        UIThrow.GetComponent<ThrowController>().Sleep();
+        cc.Swing();
+        if (cc.stick.stick != null) StartCoroutine(Swing());
+        else UIThrow.GetComponent<ThrowController>().WakeUp();
+    }
 
     public IEnumerator Swing()
     {
-
+        UIThrow.GetComponent<ThrowController>().enabled = false;
         InUse = true;
 
         //ESPERA A MOMENTO DEL GOLPE
@@ -116,11 +121,6 @@ public class UseBall : AbstractUsable {
         return stopped;
     }
 
-    internal Vector3 GetSwingTorque()
-    {
-        return this.transform.right * 100;
-    }
-
     public override void OnStart()
     {
         this.transform.LookAt(new Vector3( user.transform.position.x, this.transform.position.y, user.transform.position.z));
@@ -131,11 +131,17 @@ public class UseBall : AbstractUsable {
         cc.EnterSwing(CamPos);
 
         GetComponent<BoxCollider>().enabled = false;
+
+        UIThrow.GetComponent<ThrowController>().enabled = true;
+        UIThrow.GetComponent<ThrowController>().WakeUp();
     }
 
 
     public override void OnEnd()
     {
+        UIThrow.GetComponent<ThrowController>().Sleep();
+        UIThrow.GetComponent<ThrowController>().enabled = false;
+
         cc.ExitSwing(Ball.transform.position);
 
         GetComponent<BoxCollider>().enabled = true;
@@ -148,6 +154,6 @@ public class UseBall : AbstractUsable {
 
     public override string MessageOnUse()
     {
-        return "[A/D] Left/Right \n[Space] Throw \n[E] Exit";
+        return "[A/D] Left/Right \n[E] Exit";
     }
 }
