@@ -126,7 +126,7 @@ public class ThrowController : MonoBehaviour {
         ub.tw.ac = Mathf.Clamp( (-0.1f + acc.value)*(10 + (Mathf.Abs(ef) * 2)), -1, 1 );
         ub.tw.fc = 100 * pow.value;
         ub.tw.ht = 100 * pow.value;
-        ub.tw.ef = ef; //A IMPLEMENTAR
+        ub.tw.ef = ef;
         ub.StartSwing();
 
         
