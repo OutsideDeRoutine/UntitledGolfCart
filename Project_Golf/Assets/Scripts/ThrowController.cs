@@ -49,6 +49,7 @@ public class ThrowController : MonoBehaviour {
 
     public void ClickSpace()
     {
+        if (!usin) { StopAllCoroutines(); }
         StartCoroutine(ClickSpaceCoroutine());
     }
 
@@ -56,11 +57,15 @@ public class ThrowController : MonoBehaviour {
     public bool usin;
     public IEnumerator ClickSpaceCoroutine()
     {
+
         num++;
         Button.GetComponent<Image>().fillCenter = true;
-        
-        if(!usin)
+
+        if (!usin)
+        {
             StartCoroutine(StartPower());
+        }
+           
 
         yield return new WaitForSeconds(0.2f);
 
@@ -78,25 +83,35 @@ public class ThrowController : MonoBehaviour {
                 case 1:
                     if (pow.value == 1)
                     {
+                        Reset();
+
+                        yield return new WaitForFixedUpdate();
+
                         usin = false;
                         num = 0;
-                        Reset();
                     }
-
-                    acc.value += 0.5f * Time.deltaTime;
-                    pow.value += 0.5f * Time.deltaTime;
+                    else
+                    {
+                        acc.value += 0.5f * Time.deltaTime;
+                        pow.value += 0.5f * Time.deltaTime;
+                    }
                    
                     break;
 
                 case 2:
                     if (acc.value == 0)
                     {
+                        Reset();
+
+                        yield return new WaitForFixedUpdate();
+
                         usin = false;
                         num = 0;
-                        Reset();
                     }
-
-                    acc.value -= 0.5f * Time.deltaTime;
+                    else
+                    {
+                        acc.value -= 0.5f * Time.deltaTime;
+                    }
                     
                     break;
 
@@ -127,9 +142,7 @@ public class ThrowController : MonoBehaviour {
         ub.tw.fc = 100 * pow.value;
         ub.tw.ht = 100 * pow.value;
         ub.tw.ef = ef;
-        ub.StartSwing();
-
-        
+        ub.StartSwing();        
     }
 
     public void WakeUp()

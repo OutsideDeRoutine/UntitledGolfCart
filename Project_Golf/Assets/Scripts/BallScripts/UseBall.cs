@@ -106,7 +106,10 @@ public class UseBall : AbstractUsable {
     public bool WhileBallMoving()
     {
         float vel = Ball.GetComponent<Rigidbody>().velocity.magnitude;
-        Ball.GetComponent<Rigidbody>().AddTorque(transform.right * tw.ef * (vel), ForceMode.VelocityChange);
+        Vector3 upper= Ball.GetComponent<Rigidbody>().velocity.normalized;
+        upper = Quaternion.AngleAxis(90, transform.up) * upper;
+
+        Ball.GetComponent<Rigidbody>().AddTorque(upper * tw.ef * (vel), ForceMode.VelocityChange);
         Ball.GetComponent<Rigidbody>().AddForce(transform.right * tw.ac * (vel / 200), ForceMode.VelocityChange);
 
         cam.position = Vector3.SmoothDamp(Camera.main.transform.position , Ball.transform.position - this.transform.forward / 1.7f + Vector3.up/10, ref velocity, smoothCamPos * Time.deltaTime);
