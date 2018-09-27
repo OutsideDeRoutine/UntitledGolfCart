@@ -74,7 +74,7 @@ public class UseBall : AbstractUsable {
 
 
         //  3. CAMARA SEGUIR BOLA HASTA QUE ATERRIZA Y SE PARA
-        cc.text.text = "[W] Speed Time";
+        cc.text.text = "[Space] Speed Time";
         yield return new WaitUntil(() => WhileBallMoving());
 
         Ball.GetComponent<SphereCollider>().enabled = false;
@@ -105,25 +105,45 @@ public class UseBall : AbstractUsable {
 
     public bool WhileBallMoving()
     {
-        float vel = Ball.GetComponent<Rigidbody>().velocity.magnitude;
-        Vector3 upper= Ball.GetComponent<Rigidbody>().velocity.normalized;
-        upper = Quaternion.AngleAxis(90, transform.up) * upper;
+        Vector3 v = Ball.GetComponent<Rigidbody>().velocity;
 
-        Ball.GetComponent<Rigidbody>().AddTorque(upper * tw.ef * (vel), ForceMode.VelocityChange);
-        Ball.GetComponent<Rigidbody>().AddForce(transform.right * tw.ac * (vel / 200), ForceMode.VelocityChange);
+        float vel = v.magnitude;
+
+
+        if(tw.ac != 0)                                                                              // PRECISION
+        {
+            Vector3 f = transform.right * tw.ac * (vel / 200);
+
+            Ball.GetComponent<Rigidbody>().AddForce(f * Time.deltaTime * 50, ForceMode.VelocityChange);  
+        }
+        
+
+        if (tw.ef!=0  &&  isGrounded(Ball.transform.position, 0.05f))                               // EFECTO
+        {
+            if(tw.ef<0)
+                Ball.GetComponent<Rigidbody>().AddForce(((v / 10) * tw.ef) * Time.deltaTime, ForceMode.Impulse);
+            else
+                Ball.GetComponent<Rigidbody>().AddForce(((v / 3) * tw.ef) * Time.deltaTime, ForceMode.Force);
+        }
+
 
         cam.position = Vector3.SmoothDamp(Camera.main.transform.position , Ball.transform.position - this.transform.forward / 1.7f + Vector3.up/10, ref velocity, smoothCamPos * Time.deltaTime);
         Quaternion rot = cam.rotation;
-        cam.LookAt(Ball.transform.position - Ball.GetComponent<Rigidbody>().velocity/20);
+        cam.LookAt(Ball.transform.position - v / 20);
         cam.rotation = Quaternion.RotateTowards(rot, cam.transform.rotation ,Time.deltaTime * smoothCamRot);
 
-        vel = Ball.GetComponent<Rigidbody>().velocity.magnitude;
         bool stopped = vel < 0.02f;
 
-        if(!stopped && Input.GetKey(KeyCode.W)) Time.timeScale = 2f + (0.5f/vel);
+        if(!stopped && Input.GetKey(KeyCode.Space)) Time.timeScale =  Mathf.Clamp( 2f + (0.5f/vel), 2f, 5f);
         else Time.timeScale = 1f;
 
         return stopped;
+    }
+
+    private bool isGrounded(Vector3 pos, float distToGround)
+    {
+        return Physics.Raycast(pos + Vector3.up * (distToGround/5), -Vector3.up,  distToGround);
+    
     }
 
     public override void OnStart()
@@ -159,6 +179,6 @@ public class UseBall : AbstractUsable {
 
     public override string MessageOnUse()
     {
-        return "[A/D] Left/Right \n[E] Exit";
+        return "[A/D] Left/Right \n[Space]Throw \n[W/S] Effect \n[E] Exit";
     }
 }
