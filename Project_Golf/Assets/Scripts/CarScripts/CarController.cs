@@ -67,7 +67,10 @@ public class CarController : MonoBehaviour {
 
     public void FixedUpdate()
     {
+
+        
         Vector3 velocity = GetComponent<Rigidbody>().velocity;
+        //Debug.Log(velocity.x + " - " + velocity.y + " - " + velocity.z);
 
         Debug.DrawRay(CoM.position, velocity, Color.red);
         Debug.DrawRay(CoM.position, CoM.forward);
@@ -78,6 +81,7 @@ public class CarController : MonoBehaviour {
 
 
         float vel = velocity.magnitude;
+        Debug.Log("Magnitud de la velocidad: "+vel);
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
         if(!HandBrake) Camera.main.fieldOfView = 90 + vel;
@@ -188,6 +192,11 @@ public class CarController : MonoBehaviour {
             ApplyLocalPositionToVisuals(axleInfo.rightWheel);
         }
         if (!HandBrake)  ApplySteeringWheelRot(steering);
+
+        if (vel > 10)
+        {
+            GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(velocity, 10);
+        }
     }
 
 
