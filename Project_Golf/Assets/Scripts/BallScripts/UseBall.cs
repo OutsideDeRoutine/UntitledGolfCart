@@ -117,9 +117,10 @@ public class UseBall : AbstractUsable {
         cam.LookAt(Ball.transform.position - Ball.GetComponent<Rigidbody>().velocity/20);
         cam.rotation = Quaternion.RotateTowards(rot, cam.transform.rotation ,Time.deltaTime * smoothCamRot);
 
-        bool stopped = Ball.GetComponent<Rigidbody>().velocity.magnitude < 0.02f;
+        vel = Ball.GetComponent<Rigidbody>().velocity.magnitude;
+        bool stopped = vel < 0.02f;
 
-        if(!stopped && Input.GetKey(KeyCode.W)) Time.timeScale = 2f;
+        if(!stopped && Input.GetKey(KeyCode.W)) Time.timeScale = 2f + (0.5f/vel);
         else Time.timeScale = 1f;
 
         return stopped;

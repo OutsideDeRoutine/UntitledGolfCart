@@ -97,4 +97,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPutt: 1
-  forceXY: {x: 10, y: 0}
+  forceXY: {x: 20, y: 0}
