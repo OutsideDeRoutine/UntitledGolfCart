@@ -31,19 +31,39 @@ public class ThrowController : MonoBehaviour {
         num = 0;
     }
 
+    private Coroutine routineEF;
+    private float efmov;
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ClickSpace();
         }
-        if (Input.GetKeyDown(KeyCode.W))
+
+        float move = Input.GetAxis("Vertical");
+        if (move != 0)
         {
-            eff.value-=0.1f ;
+            efmov = -0.1f * move;
+            if (routineEF == null)  routineEF = StartCoroutine(MoveEF());
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        else
         {
-            eff.value+= 0.1f;
+            efmov = 0f;
+            if (routineEF != null)
+            {
+                StopCoroutine(routineEF);
+                routineEF = null;
+            }
+        }
+    }
+
+    public IEnumerator MoveEF()
+    {
+        while (efmov!=0)
+        {
+            eff.value += efmov;
+            yield return new WaitForSeconds(0.15f);
         }
     }
 
@@ -139,8 +159,10 @@ public class ThrowController : MonoBehaviour {
         float ef = (eff.value - 0.5f) * 2;
 
         ub.tw.ac = Mathf.Clamp( (-0.1f + acc.value)*(10 + (Mathf.Abs(ef) * 2)), -1, 1 );
-        ub.tw.fc = 100 * pow.value;
-        ub.tw.ht = 100 * pow.value;
+
+        ub.tw.fc = (ef < 0 ? (100 - (50 * -ef)) : 100) * pow.value;
+        ub.tw.ht = (ef > 0 ? (100 - (50 * ef)) : 100) * pow.value;
+
         ub.tw.ef = ef;
         ub.StartSwing();        
     }

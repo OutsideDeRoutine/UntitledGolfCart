@@ -81,7 +81,7 @@ public class CarController : MonoBehaviour {
 
 
         float vel = velocity.magnitude;
-        Debug.Log("Magnitud de la velocidad: "+vel);
+        //Debug.Log("Magnitud de la velocidad: "+vel);
         float maxSteeringAtVel = Mathf.Clamp(maxSteeringAngle - (vel), 10, maxSteeringAngle);
 
         if(!HandBrake) Camera.main.fieldOfView = 90 + vel;
