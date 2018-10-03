@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEditor;
 
 public class TerrainFitter : MonoBehaviour {
 
@@ -18,12 +19,12 @@ public class TerrainFitter : MonoBehaviour {
   public GameObject OuterMesh;
 
     // Use this for initialization
-    void Start () {
+    public void DoYourThing () {
 
         terr = Terrain.activeTerrain;
         hmWidth = terr.terrainData.heightmapWidth;
         hmHeight = terr.terrainData.heightmapHeight;
-        OuterMesh.GetComponent<MeshFilter>().mesh.vertices.ToList().ForEach(x => SetHeight(x));
+        OuterMesh.GetComponent<MeshFilter>().sharedMesh.vertices.ToList().ForEach(x => SetHeight(x));
 
     }
 
@@ -55,4 +56,5 @@ public class TerrainFitter : MonoBehaviour {
         // set the new height
         terr.terrainData.SetHeights(posXInTerrain - offset, posYInTerrain - offset, heights);
     }
+
 }
