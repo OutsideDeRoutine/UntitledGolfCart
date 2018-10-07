@@ -75,12 +75,21 @@ public class CharControlller : MonoBehaviour {
 
 
     private Quaternion _srot;
+    public GameObject ball;
+    public Transform ballPos;
+    public TMPro.TextMeshProUGUI ballText;
     void LateUpdate()
     {
         if (!inUse)
         {
+            ballText.text = "[R] Reset Ball";
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                ball.transform.position = ballPos.position;
+            }
 
-            Vector3 dir=_controller.velocity.normalized;
+
+                Vector3 dir=_controller.velocity.normalized;
             Debug.DrawRay(_controller.transform.position, dir,Color.red);
 
             v = Mathf.Abs(v) == 0 ? 0 : v > 0 ? 1 : -1;
@@ -136,7 +145,8 @@ public class CharControlller : MonoBehaviour {
         }
         else
         {
-            _srot= Armature.rotation;
+            ballText.text = "";
+            _srot = Armature.rotation;
         }
         if (stick.stick != null)
         {
