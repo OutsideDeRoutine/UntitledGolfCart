@@ -25447,6 +25447,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OuterMesh: {fileID: 1723647593}
+--- !u!1 &1723729406 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1350308216991554, guid: e2344e67749348248bcdbbac970b8b5e,
+    type: 2}
+  m_PrefabInternal: {fileID: 921777109}
 --- !u!1001 &1741692448
 Prefab:
   m_ObjectHideFlags: 0
@@ -31346,7 +31351,7 @@ Prefab:
         type: 2}
       propertyPath: ball
       value: 
-      objectReference: {fileID: 921777110}
+      objectReference: {fileID: 1723729406}
     - target: {fileID: 114933816457239146, guid: 6a2d3568e73658d4f81db7389fdc44bc,
         type: 2}
       propertyPath: Ball
