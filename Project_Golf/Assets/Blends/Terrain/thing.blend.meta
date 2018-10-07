@@ -7,23 +7,28 @@ ModelImporter:
     100002: Outer
     100004: Plane
     100006: Grid
+    100008: Grid_000
     400000: //RootNode
     400002: Outer
     400004: Plane
     400006: Grid
+    400008: Grid_000
     2100000: Material_001
     2100002: Material
     2300000: //RootNode
     2300002: Outer
     2300004: Plane
     2300006: Grid
+    2300008: Grid_000
     3300000: //RootNode
     3300002: Outer
     3300004: Plane
     3300006: Grid
+    3300008: Grid_000
     4300000: Plane
     4300002: Outer
     4300004: Grid
+    4300006: Grid_000
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
