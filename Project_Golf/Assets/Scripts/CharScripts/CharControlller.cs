@@ -48,6 +48,9 @@ public class CharControlller : MonoBehaviour {
         _animator = GetComponent<Animator>();
         mainCamera = Camera.main;
 
+        Cursor.lockState= CursorLockMode.Locked;
+        Cursor.visible = false;
+
         _srot = Armature.rotation;
     }
 
