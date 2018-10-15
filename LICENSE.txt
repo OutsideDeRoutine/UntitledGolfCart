@@ -6,13 +6,17 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/
 
 Left click icon: golf-ball.png
 Made by Rojal 
-source page:http://www.pngall.com/golf-ball-png
+source page: http://www.pngall.com/golf-ball-png
 License under the Creative Creative Commons 4.0 BY-NC 
 https://creativecommons.org/licenses/by-nc/4.0/
 
 
 Left click icon: expandir-boton.png
 Made by Techntvz
-source page:https://fi.wikipedia.org/wiki/Tiedosto:Arrow-down.svg
+source page: https://fi.wikipedia.org/wiki/Tiedosto:Arrow-down.svg
 License under the Creative Creative Commons 4.0 BY-NC 
 https://creativecommons.org/licenses/by-nc/4.0/
+
+SkyBox: FREE Skybox - Cubemap Extended
+Made by BOXOPHOBIC
+source page: https://assetstore.unity.com/packages/vfx/shaders/free-skybox-cubemap-extended-107400 
